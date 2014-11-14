@@ -1,4 +1,4 @@
 GRASS
 =====
 
-**G** ene **R** ated **A** bstractions for **S** tatics and **S** ingletons
+GeneRated Abstractions for Statics and Singletons
