@@ -8,21 +8,24 @@ namespace Grass
 {
     public static class Grass
     {
+        public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{2}\")]", "ArtisanCode.Grass", AssemblyName.GetAssemblyName("ArtisanCode.Grass.dll").Version); } }
         public static string Static(string qualifiedAssemblyName, bool partial = true)
         {
-            HashSet<string> namespaces = new HashSet<string>();
-
             var output = new StringBuilder();
+            var namespaces = new HashSet<string>() { "System.CodeDom.Compiler" };
 
-            var methods = GetMethods(qualifiedAssemblyName).Select(x=>GenerateMethodOutput(x, ref namespaces)).ToList();
+            var className = GetClassName(qualifiedAssemblyName);
+            var methods = GetMethods(qualifiedAssemblyName);
+
+            var methodsOutput = methods.Select(x=>GenerateMethodOutput(x, ref namespaces)).ToList();
 
             output.AppendLine(GenerateUsingStatements(namespaces));
             output.AppendLine();
 
-            var className = GetClassName(qualifiedAssemblyName);
+            output.AppendLine(GeneratedCodeTag);
             output.AppendFormat("public {0} class {1}Wrapper {2}", (partial?"partial":""), className, Environment.NewLine);
             output.AppendLine("{");
-            foreach (var m in methods)
+            foreach (var m in methodsOutput)
             {
                 output.AppendLine(m);
             }
@@ -35,7 +38,7 @@ namespace Grass
         {
             var output = new StringBuilder();
 
-            foreach (var x in namespaces)
+            foreach (var x in namespaces.OrderBy(x=>x))
             {
                 output.AppendFormat("using {0};{1}", x, Environment.NewLine);
             }
