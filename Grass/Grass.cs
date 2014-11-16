@@ -10,36 +10,52 @@ namespace Grass
     {
         public static string Static(string qualifiedAssemblyName, bool partial = true)
         {
+            HashSet<string> namespaces = new HashSet<string>();
+
             var output = new StringBuilder();
-            output.AppendLine("using System;");
+
+            var methods = GetMethods(qualifiedAssemblyName).Select(x=>GenerateMethodOutput(x, ref namespaces)).ToList();
+
+            output.AppendLine(GenerateUsingStatements(namespaces));
             output.AppendLine();
 
             var className = GetClassName(qualifiedAssemblyName);
             output.AppendFormat("public {0} class {1}Wrapper {2}", (partial?"partial":""), className, Environment.NewLine);
             output.AppendLine("{");
-
-            var methods = GetMethods(qualifiedAssemblyName);
             foreach (var m in methods)
             {
-                output.AppendLine(GenerateMethodOutput(m));
+                output.AppendLine(m);
             }
-
             output.AppendLine("}");
 
             return output.ToString();
         }
 
-        public static string GenerateMethodOutput(MethodInfo m)
+        private static string GenerateUsingStatements(HashSet<string> namespaces)
         {
             var output = new StringBuilder();
 
-            output.AppendFormat("//{0} {1} {2}", GetMethodVisibility(m), GetReturnType(m), m.Name);
+            foreach (var x in namespaces)
+            {
+                output.AppendFormat("using {0};{1}", x, Environment.NewLine);
+            }
 
             return output.ToString();
         }
 
-        public static string GetReturnType(MethodInfo m)
+        public static string GenerateMethodOutput(MethodInfo m, ref HashSet<string> namespaces)
         {
+            var output = new StringBuilder();
+
+            output.AppendFormat("//{0} {1} {2}", GetMethodVisibility(m), GetReturnType(m, ref namespaces), m.Name);
+
+            return output.ToString();
+        }
+
+        public static string GetReturnType(MethodInfo m, ref HashSet<string> namespaces)
+        {
+            namespaces.Add(m.ReturnType.Namespace);
+
             if(m.ReturnType == typeof(void))
             {
                 return "void";

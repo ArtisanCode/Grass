@@ -1,5 +1,9 @@
 ﻿
 using System;
+using System.IO;
+using System.Security.AccessControl;
+using System.Collections.Generic;
+
 
 public partial class FileWrapper 
 {
