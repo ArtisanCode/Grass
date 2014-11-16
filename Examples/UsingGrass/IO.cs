@@ -1,0 +1,62 @@
+﻿
+using System;
+
+public partial class FileWrapper 
+{
+//public Void AppendAllLines;
+//public Void AppendAllLines;
+//public Void AppendAllText;
+//public Void AppendAllText;
+//public StreamWriter AppendText;
+//public Void Copy;
+//public Void Copy;
+//public FileStream Create;
+//public FileStream Create;
+//public FileStream Create;
+//public FileStream Create;
+//public StreamWriter CreateText;
+//public Void Decrypt;
+//public Void Delete;
+//public Void Encrypt;
+//public Boolean Exists;
+//public FileSecurity GetAccessControl;
+//public FileSecurity GetAccessControl;
+//public FileAttributes GetAttributes;
+//public DateTime GetCreationTime;
+//public DateTime GetCreationTimeUtc;
+//public DateTime GetLastAccessTime;
+//public DateTime GetLastAccessTimeUtc;
+//public DateTime GetLastWriteTime;
+//public DateTime GetLastWriteTimeUtc;
+//public Void Move;
+//public FileStream Open;
+//public FileStream Open;
+//public FileStream Open;
+//public FileStream OpenRead;
+//public StreamReader OpenText;
+//public FileStream OpenWrite;
+//public Byte[] ReadAllBytes;
+//public String[] ReadAllLines;
+//public String[] ReadAllLines;
+//public String ReadAllText;
+//public String ReadAllText;
+//public IEnumerable`1 ReadLines;
+//public IEnumerable`1 ReadLines;
+//public Void Replace;
+//public Void Replace;
+//public Void SetAccessControl;
+//public Void SetAttributes;
+//public Void SetCreationTime;
+//public Void SetCreationTimeUtc;
+//public Void SetLastAccessTime;
+//public Void SetLastAccessTimeUtc;
+//public Void SetLastWriteTime;
+//public Void SetLastWriteTimeUtc;
+//public Void WriteAllBytes;
+//public Void WriteAllLines;
+//public Void WriteAllLines;
+//public Void WriteAllLines;
+//public Void WriteAllLines;
+//public Void WriteAllText;
+//public Void WriteAllText;
+}

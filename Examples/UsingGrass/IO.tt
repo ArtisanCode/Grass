@@ -1,0 +1,6 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(TargetDir)Grass.dll" #>
+<#@ import namespace="Grass" #>
+<#@ output extension=".cs" #>
+
+<#= Grass.Static("System.IO.File") #>

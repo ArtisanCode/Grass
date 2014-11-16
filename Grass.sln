@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8BA17F6F-D2BA-4D51-8CF5-8C11269F7461}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{136B7DE0-D0CF-4F42-936F-4A41195E4F64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1A04A979-B202-4B7A-AB95-8831ED1B7CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grass", "Grass\Grass.csproj", "{63AD8324-C978-41A6-9294-8BCE6BB8C967}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsingGrass", "Examples\UsingGrass\UsingGrass.csproj", "{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63AD8324-C978-41A6-9294-8BCE6BB8C967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AD8324-C978-41A6-9294-8BCE6BB8C967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AD8324-C978-41A6-9294-8BCE6BB8C967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AD8324-C978-41A6-9294-8BCE6BB8C967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63AD8324-C978-41A6-9294-8BCE6BB8C967} = {8BA17F6F-D2BA-4D51-8CF5-8C11269F7461}
+		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0} = {136B7DE0-D0CF-4F42-936F-4A41195E4F64}
+	EndGlobalSection
+EndGlobal
