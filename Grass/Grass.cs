@@ -33,9 +33,20 @@ namespace Grass
         {
             var output = new StringBuilder();
 
-            output.AppendFormat("//{0} {1} {2};", GetMethodVisibility(m), m.ReturnType.Name, m.Name);
+            output.AppendFormat("//{0} {1} {2}", GetMethodVisibility(m), GetReturnType(m), m.Name);
 
             return output.ToString();
+        }
+
+        public static string GetReturnType(MethodInfo m)
+        {
+            if(m.ReturnType == typeof(void))
+            {
+                return "void";
+            }
+
+            return m.ReturnType.Name;
+
         }
 
         public static string GetMethodVisibility(MethodInfo m)
