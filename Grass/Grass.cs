@@ -94,7 +94,8 @@ namespace Grass
 
         public static string GetClassName(string qualifiedAssemblyName)
         {
-            return qualifiedAssemblyName.Split(new[] {"."}, StringSplitOptions.RemoveEmptyEntries).Last();
+            var classReference = qualifiedAssemblyName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).First();
+            return classReference.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries).Last();
         }
     }
 }
