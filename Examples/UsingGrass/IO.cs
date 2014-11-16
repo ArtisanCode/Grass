@@ -1,10 +1,12 @@
 ﻿
 using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
-using System.Collections.Generic;
 
 
+[GeneratedCode("ArtisanCode.Grass","1.0.0.0")]
 public partial class FileWrapper 
 {
 //public void AppendAllLines

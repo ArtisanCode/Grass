@@ -8,7 +8,7 @@ namespace Grass
 {
     public static class Grass
     {
-        public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{2}\")]", "ArtisanCode.Grass", AssemblyName.GetAssemblyName("ArtisanCode.Grass.dll").Version); } }
+        public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{1}\")]", "ArtisanCode.Grass", Assembly.GetAssembly(typeof(Grass)).GetName().Version); } }
         public static string Static(string qualifiedAssemblyName, bool partial = true)
         {
             var output = new StringBuilder();

@@ -1,5 +1,5 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="$(TargetDir)Grass.dll" #>
+<#@ assembly name="$(TargetDir)ArtisanCode.Grass.dll" #>
 <#@ import namespace="Grass" #>
 <#@ output extension=".cs" #>
 
