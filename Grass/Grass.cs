@@ -9,13 +9,13 @@ namespace Grass
     public static class Grass
     {
         public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{1}\")]", "ArtisanCode.Grass", Assembly.GetAssembly(typeof(Grass)).GetName().Version); } }
-        public static string Static(string qualifiedAssemblyName, bool partial = true)
+        public static string Static(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
         {
             var output = new StringBuilder();
             var namespaces = new HashSet<string>() { "System.CodeDom.Compiler" };
 
             var className = GetClassName(qualifiedAssemblyName);
-            var methods = GetMethods(qualifiedAssemblyName);
+            var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
 
             var methodsOutput = methods.Select(x=>GenerateMethodOutput(x, ref namespaces)).ToList();
 
@@ -83,11 +83,33 @@ namespace Grass
             else return "internal";
         }
 
-        public static List<MethodInfo> GetMethods(string qualifiedAssemblyName)
+        public static List<MethodInfo> GetStaticMethods(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public)
         {
             var type = Type.GetType(qualifiedAssemblyName);
 
-            var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Static);
+            var accessor = BindingFlags.Public;
+
+            if(minimumVisibility.HasFlag(Visibility.Internal) || minimumVisibility.HasFlag(Visibility.Protected) || minimumVisibility.HasFlag(Visibility.Private))
+            {
+                accessor |= BindingFlags.NonPublic;
+            }
+
+            var methods = type.GetMethods(accessor | BindingFlags.Static);
+
+            if(!minimumVisibility.HasFlag(Visibility.Private))
+            {
+                methods = methods.Where(x => !x.IsPrivate).ToArray();
+            }
+
+            if (!minimumVisibility.HasFlag(Visibility.Protected))
+            {
+                methods = methods.Where(x => !x.IsFamily).ToArray();
+            }
+
+            if (!minimumVisibility.HasFlag(Visibility.Internal))
+            {
+                methods = methods.Where(x => !x.IsFamilyOrAssembly).ToArray();
+            }
 
             return methods.OrderBy(x => x.Name).ToList();
         }

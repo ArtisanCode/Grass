@@ -3,4 +3,4 @@
 <#@ import namespace="Grass" #>
 <#@ output extension=".cs" #>
 
-<#= Grass.Static("ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass") #>
+<#= Grass.Static("ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass", Visibility.Internal) #>

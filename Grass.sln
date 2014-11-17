@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grass", "Grass\Grass.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsingGrass", "Examples\UsingGrass\UsingGrass.csproj", "{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Grass", "Test.Grass\Test.Grass.csproj", "{E1FBCDD8-18C0-490E-A522-FB018C0784B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1FBCDD8-18C0-490E-A522-FB018C0784B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1FBCDD8-18C0-490E-A522-FB018C0784B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1FBCDD8-18C0-490E-A522-FB018C0784B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1FBCDD8-18C0-490E-A522-FB018C0784B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,5 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{63AD8324-C978-41A6-9294-8BCE6BB8C967} = {8BA17F6F-D2BA-4D51-8CF5-8C11269F7461}
 		{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0} = {136B7DE0-D0CF-4F42-936F-4A41195E4F64}
+		{E1FBCDD8-18C0-490E-A522-FB018C0784B1} = {1A04A979-B202-4B7A-AB95-8831ED1B7CC6}
 	EndGlobalSection
 EndGlobal
