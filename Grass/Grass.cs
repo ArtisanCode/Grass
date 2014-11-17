@@ -80,6 +80,11 @@ namespace GrassTemplate
                 return "private";
             }
 
+            if(m.IsFamily)
+            {
+                return "protected";
+            }
+
             else return "internal";
         }
 

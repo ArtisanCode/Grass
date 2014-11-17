@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GrassTemplate;
+using System.Reflection;
 
 namespace GrassTests
 {
@@ -17,6 +18,21 @@ namespace GrassTests
         private void Test_GetClassName(string input, string expectedOutput)
         {
             var output = Grass.GetClassName(input);
+            Assert.AreEqual(expectedOutput, output);
+        }
+        
+        [TestMethod]
+        public void GetMethodVisibility_ValidAssemblyReferences_VisibilityRetrieved()
+        {
+            GetMethodVisibilityTest_GetClassName(typeof(TestClass).GetMethod("PublicMethod"), "public");
+            GetMethodVisibilityTest_GetClassName(typeof(TestClass).GetMethod("InternalMethod", BindingFlags.NonPublic | BindingFlags.Instance), "internal");
+            GetMethodVisibilityTest_GetClassName(typeof(TestClass).GetMethod("ProtectedMethod", BindingFlags.NonPublic | BindingFlags.Instance), "protected");
+            GetMethodVisibilityTest_GetClassName(typeof(TestClass).GetMethod("PrivateMethod", BindingFlags.NonPublic | BindingFlags.Instance), "private");
+        }
+
+        private void GetMethodVisibilityTest_GetClassName(MethodInfo method, string expectedOutput)
+        {
+            var output = Grass.GetMethodVisibility(method);
             Assert.AreEqual(expectedOutput, output);
         }
     }
