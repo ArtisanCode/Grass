@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Grass
+namespace GrassTemplate
 {
     public static class Grass
     {

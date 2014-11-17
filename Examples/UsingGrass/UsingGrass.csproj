@@ -68,9 +68,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Grass\Grass.csproj">
+    <ProjectReference Include="..\..\Grass\GrassTemplate.csproj">
       <Project>{63ad8324-c978-41a6-9294-8bce6bb8c967}</Project>
-      <Name>Grass</Name>
+      <Name>GrassTemplate</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

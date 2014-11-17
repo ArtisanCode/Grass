@@ -6,7 +6,7 @@
     <ProjectGuid>{E1FBCDD8-18C0-490E-A522-FB018C0784B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Test.Grass</RootNamespace>
+    <RootNamespace>GrassTests</RootNamespace>
     <AssemblyName>Test.Grass</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,6 +55,12 @@
   <ItemGroup>
     <Compile Include="GrassTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Grass\GrassTemplate.csproj">
+      <Project>{63ad8324-c978-41a6-9294-8bce6bb8c967}</Project>
+      <Name>GrassTemplate</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

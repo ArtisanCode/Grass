@@ -1,6 +1,6 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="$(TargetDir)ArtisanCode.Grass.dll" #>
-<#@ import namespace="Grass" #>
+<#@ import namespace="GrassTemplate" #>
 <#@ output extension=".cs" #>
 
 <#= Grass.Static("System.IO.File") #>
