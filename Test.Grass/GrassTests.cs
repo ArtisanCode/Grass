@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GrassTemplate;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace GrassTests
 {
@@ -34,6 +35,24 @@ namespace GrassTests
         {
             var output = Grass.GetMethodVisibility(method);
             Assert.AreEqual(expectedOutput, output);
+        }
+
+        [TestMethod]
+        public void DetermineType_ValidTypesRetrieved_NamespacesUpdated()
+        {           
+            DetermineTypeTest<string>("String", "System");
+            DetermineTypeTest<HashSet<string>>("HashSet<String>", "System.Collections.Generic");
+            DetermineTypeTest<Tuple<string, int, long>>("Tuple<String, Int32, Int64>", "System");
+        }
+
+        private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded, HashSet<string> existingNamespaces = null )
+        {
+            var namespaces = existingNamespaces ?? new HashSet<string>();
+
+            var output = Grass.DetermineType(typeof(T), ref namespaces);
+
+            Assert.AreEqual(expectedOutput, output);
+            Assert.IsTrue(namespaces.Contains(expectedNamespaceAdded));
         }
     }
 }

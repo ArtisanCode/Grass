@@ -48,8 +48,8 @@ namespace ArtisanCode.UsingGrass
         //public virtual String[] ReadAllLines
         //public virtual String ReadAllText
         //public virtual String ReadAllText
-        //public virtual IEnumerable`1 ReadLines
-        //public virtual IEnumerable`1 ReadLines
+        //public virtual IEnumerable<String> ReadLines
+        //public virtual IEnumerable<String> ReadLines
         //public virtual void Replace
         //public virtual void Replace
         //public virtual void SetAccessControl

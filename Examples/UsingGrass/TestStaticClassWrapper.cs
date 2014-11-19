@@ -12,7 +12,7 @@ namespace ArtisanCode.UsingGrass
         //internal virtual String InternalFunctionWithCrazyParameters
         //public virtual Boolean ReturnBoolListOfBools
         //public virtual Boolean ReturnBoolNoParameters
-        //public virtual Dictionary`2 ReturnDictionary
+        //public virtual Dictionary<Int32, IList<Boolean>> ReturnDictionary
         //public virtual Object UsingDynamics
     }
 }

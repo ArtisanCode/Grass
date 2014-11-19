@@ -39,12 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileWrapper.cs" />
-    <Compile Include="IFile.cs" />
-    <Compile Include="IO.cs">
+    <Compile Include="File.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IO.tt</DependentUpon>
+      <DependentUpon>File.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestStaticClass.cs" />
@@ -55,9 +53,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="IO.tt">
+    <None Include="File.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IO.cs</LastGenOutput>
+      <LastGenOutput>File.cs</LastGenOutput>
     </None>
     <None Include="TestStaticClassWrapper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

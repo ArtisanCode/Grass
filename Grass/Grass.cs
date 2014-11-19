@@ -59,21 +59,35 @@ namespace GrassTemplate
         {
             var output = new StringBuilder();
 
-            output.AppendFormat("//{0} virtual {1} {2}", GetMethodVisibility(m), GetReturnType(m, ref namespaces), m.Name);
+            output.AppendFormat("//{0} virtual {1} {2}", GetMethodVisibility(m), DetermineType(m.ReturnType, ref namespaces), m.Name);
 
             return output.ToString();
         }
 
-        public static string GetReturnType(MethodInfo m, ref HashSet<string> namespaces)
+        public static string DetermineType(Type t, ref HashSet<string> namespaces)
         {
-            namespaces.Add(m.ReturnType.Namespace);
+            namespaces.Add(t.Namespace);
 
-            if(m.ReturnType == typeof(void))
+            if(t.IsGenericType)
+            {
+                var name = t.Name.Split(new[] {'`'}).First();
+
+                var genericParams = new List<string>();
+
+                foreach (var genericArguement in t.GetGenericArguments())
+                {
+                    genericParams.Add(DetermineType(genericArguement, ref namespaces));
+                }
+
+                return string.Format("{0}<{1}>", name, string.Join(", ",genericParams));
+            }
+
+            if(t == typeof(void))
             {
                 return "void";
             }
 
-            return m.ReturnType.Name;
+            return t.Name;
 
         }
 
