@@ -40,6 +40,8 @@ namespace GrassTests
         [TestMethod]
         public void DetermineType_ValidTypesRetrieved_NamespacesUpdated()
         {
+            DetermineTypeTest<dynamic>("Object", "System"); // NB: can't test for dynamic, therefore just use Object
+            DetermineTypeTest<object>("Object", "System"); 
             DetermineTypeTest<string>("String", "System");
             DetermineTypeTest<int>("Int32", "System");
             DetermineTypeTest<short>("Int16", "System");
