@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 
 namespace GrassTemplate
@@ -22,16 +23,24 @@ namespace GrassTemplate
             output.AppendLine(GenerateUsingStatements(namespaces));
             output.AppendLine();
 
-            output.AppendLine(GeneratedCodeTag);
-            output.AppendFormat("public {0} class {1}Wrapper {2}", (partial?"partial":""), className, Environment.NewLine);
+            output.AppendFormat("namespace {0}{1}", CallContext.LogicalGetData("NamespaceHint"), Environment.NewLine);
             output.AppendLine("{");
+            output.AppendLine(Indent(1) + GeneratedCodeTag);
+            output.AppendFormat("{0}public {1} class {2}Wrapper {3}", Indent(1), (partial?"partial":""), className, Environment.NewLine);
+            output.AppendLine(Indent(1) + "{");
             foreach (var m in methodsOutput)
             {
-                output.AppendLine(m);
+                output.AppendLine(Indent(2) + m);
             }
+            output.AppendLine(Indent(1) + "}");
             output.AppendLine("}");
 
             return output.ToString();
+        }
+
+        public static string Indent(int level) 
+        {
+            return new string(' ', level * 4);
         }
 
         private static string GenerateUsingStatements(HashSet<string> namespaces)
@@ -50,7 +59,7 @@ namespace GrassTemplate
         {
             var output = new StringBuilder();
 
-            output.AppendFormat("//{0} {1} {2}", GetMethodVisibility(m), GetReturnType(m, ref namespaces), m.Name);
+            output.AppendFormat("//{0} virtual {1} {2}", GetMethodVisibility(m), GetReturnType(m, ref namespaces), m.Name);
 
             return output.ToString();
         }
