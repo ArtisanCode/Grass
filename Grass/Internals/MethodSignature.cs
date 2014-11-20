@@ -66,6 +66,38 @@ namespace GrassTemplate.Internals
             }
 
             else return Visibility.Internal;
-        }        
+        }
+
+        public string GetParameterList()
+        {
+            List<string> output = new List<string>();
+
+            foreach (var p in Parameters)
+            {
+                output.Add(p.ToParameterDefinition());
+            }
+
+            return string.Join(", ", output);
+        }
+
+        public string ToClassMethod()
+        {
+            return string.Format( 
+                "{0}{1} {2} {3}(4)", 
+                Accessability.ToString().ToLower(),
+                Virtual?" virtual":"",
+                ReturnType,
+                Name,
+                GetParameterList());
+        }
+
+        public string ToInterfaceMethod()
+        {
+            return string.Format(
+                "{2} {3}(4);",
+                ReturnType,
+                Name,
+                GetParameterList());
+        }
     }
 }

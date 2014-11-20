@@ -20,16 +20,21 @@ namespace GrassTemplate.Internals
             get { return _requiredNamespaces; }
             set { _requiredNamespaces = value; }
         }
-
-        public ParameterSignature(ParameterInfo info)
+        public ParameterSignature()
         {
-           RequiredNamespaces = new HashSet<string>();
+            RequiredNamespaces = new HashSet<string>();
+        }
 
+        public ParameterSignature(ParameterInfo info) : this()
+        {
             BaseInfo = info;
             Type = TypeHelper.DetermineType(info.ParameterType, ref _requiredNamespaces);
             Name = info.Name;
         }
 
-        
+        public string ToParameterDefinition()
+        {
+            return string.Format("{0} {1}", Type, Name);
+        }
     }
 }
