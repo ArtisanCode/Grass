@@ -54,6 +54,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="GrassTests.cs" />
+    <Compile Include="Internals\MethodSignatureTests.cs" />
+    <Compile Include="Internals\TypeHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClass.cs" />
   </ItemGroup>

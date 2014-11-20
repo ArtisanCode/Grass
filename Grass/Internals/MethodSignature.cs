@@ -8,6 +8,8 @@ namespace GrassTemplate.Internals
 {
     public class MethodSignature
     {
+        protected HashSet<string> _requiredNamespaces;
+
         public Visibility Accessability { get; set; }
 
         public string ReturnType { get; set; }
@@ -20,17 +22,30 @@ namespace GrassTemplate.Internals
 
         public MethodInfo BaseInfo { get; set; }
 
-        public HashSet<string> RequiredNamespaces { get; set; }
-
-        public MethodSignature(MethodInfo info, bool IsVirtual = true)
+        public HashSet<string> RequiredNamespaces
+        {
+            get { return _requiredNamespaces; }
+            set { _requiredNamespaces = value; }
+        }
+                
+        public MethodSignature()
         {
             RequiredNamespaces = new HashSet<string>();
+        }
 
+        public MethodSignature(MethodInfo info, bool IsVirtual = true): this()
+        {
             BaseInfo = info;
             Accessability = GetMethodVisibility(info);
-            ReturnType = DetermineType(info.ReturnType);
+            ReturnType = TypeHelper.DetermineType(info.ReturnType, ref _requiredNamespaces);
             Name = info.Name;
             Virtual = IsVirtual;
+
+            var parameterList = new List<ParameterSignature>();
+            foreach(var p in info.GetParameters())
+            {
+                parameterList.Add(new ParameterSignature(p));
+            }
         }
 
         public Visibility GetMethodVisibility(MethodInfo m)
@@ -51,32 +66,6 @@ namespace GrassTemplate.Internals
             }
 
             else return Visibility.Internal;
-        }
-        
-        public string DetermineType(Type t)
-        {
-            RequiredNamespaces.Add(t.Namespace);
-
-            if (t.IsGenericType)
-            {
-                var name = t.Name.Split(new[] { '`' }).First();
-
-                var genericParams = new List<string>();
-
-                foreach (var genericArguement in t.GetGenericArguments())
-                {
-                    genericParams.Add(DetermineType(genericArguement));
-                }
-
-                return string.Format("{0}<{1}>", name, string.Join(", ", genericParams));
-            }
-
-            if (t == typeof(void))
-            {
-                return "void";
-            }
-
-            return t.Name;
-        }
+        }        
     }
 }

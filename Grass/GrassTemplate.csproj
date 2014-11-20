@@ -42,6 +42,7 @@
     <Compile Include="Grass.cs" />
     <Compile Include="Internals\MethodSignature.cs" />
     <Compile Include="Internals\ParameterSignature.cs" />
+    <Compile Include="Internals\TypeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visibility.cs" />
   </ItemGroup>
