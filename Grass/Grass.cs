@@ -109,7 +109,7 @@ namespace GrassTemplate
         public static string GenerateMethodOutput(MethodInfo m, ref HashSet<string> namespaces, ref Dictionary<Visibility,HashSet<string>> interfaces)
         {
             var output = new StringBuilder();
-            var methodSigniture = string.Format("//{0} {1}", DetermineType(m.ReturnType, ref namespaces), m.Name);
+            var methodSigniture = string.Format("{0} {1}", DetermineType(m.ReturnType, ref namespaces), m.Name);
 
             if(m.IsPublic)
             {
