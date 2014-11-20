@@ -63,5 +63,12 @@ namespace GrassTests
             Assert.AreEqual(expectedOutput, output);
             Assert.IsTrue(namespaces.Contains(expectedNamespaceAdded));
         }
+        
+
+        [TestMethod]
+        public void Static_OutputGenerated_NoExceptions()
+        {
+            var output = Grass.Static("System.IO.File");
+        }
     }
 }

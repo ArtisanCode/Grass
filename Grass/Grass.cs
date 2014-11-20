@@ -17,17 +17,54 @@ namespace GrassTemplate
             var interfaces = new Dictionary<Visibility, HashSet<string>>();
 
             var className = GetClassName(qualifiedAssemblyName);
+
             var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
 
             var methodsOutput = methods.Select(x=>GenerateMethodOutput(x, ref namespaces, ref interfaces)).ToList();
 
+            var callContext = CallContext.LogicalGetData("NamespaceHint");
+            var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
+
             output.AppendLine(GenerateUsingStatements(namespaces));
             output.AppendLine();
 
-            output.AppendFormat("namespace {0}{1}", CallContext.LogicalGetData("NamespaceHint"), Environment.NewLine);
+            output.AppendLine(GenerateInterfaceCode(className, methodsOutput, interfaces, ns));
+
+            output.AppendLine(GenerateClassCode(className, partial, methodsOutput, ns));
+
+            return output.ToString();
+        }
+        public static string GenerateInterfaceCode(string className, List<string> methodsOutput, Dictionary<Visibility, HashSet<string>> interfaces, string ns)
+        {
+            StringBuilder output = new StringBuilder();
+
+            foreach (var i in interfaces)
+            {
+                output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
+
+                output.AppendLine("{");
+                output.AppendLine(Indent(1) + GeneratedCodeTag);
+                output.AppendFormat("{0}{1} interface I{2}{3} {4}", Indent(1), i.Key.ToString().ToLower(), className, i.Key == Visibility.Public ? "" : i.Key.ToString(), Environment.NewLine);
+                output.AppendLine(Indent(1) + "{");
+                foreach (var m in methodsOutput)
+                {
+                    output.AppendLine(Indent(2) + m.Replace(i.Key.ToString(),"") + ";");
+                }
+                output.AppendLine(Indent(1) + "}");
+                output.AppendLine("}");
+            }
+
+            return output.ToString();
+        }
+
+        public static string GenerateClassCode(string className, bool partial, List<string> methodsOutput, string ns)
+        {
+            StringBuilder output = new StringBuilder();
+
+            output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
             output.AppendLine("{");
             output.AppendLine(Indent(1) + GeneratedCodeTag);
-            output.AppendFormat("{0}public {1} class {2}Wrapper {3}", Indent(1), (partial?"partial":""), className, Environment.NewLine);
+            output.AppendFormat("{0}public {1} class {2}Wrapper : {3} {4}", Indent(1), (partial ? "partial" : ""), className, "I"+className, Environment.NewLine);
             output.AppendLine(Indent(1) + "{");
             foreach (var m in methodsOutput)
             {
@@ -53,7 +90,20 @@ namespace GrassTemplate
                 output.AppendFormat("using {0};{1}", x, Environment.NewLine);
             }
 
-            return output.ToString();
+            return output.ToString();        
+        }
+
+        public static void InitInterface(ref Dictionary<Visibility,HashSet<string>> interfaces, Visibility accessability)
+        {
+            if(interfaces == null)
+            {
+                interfaces = new Dictionary<Visibility, HashSet<string>>();
+            }
+
+            if(!interfaces.ContainsKey(accessability))
+            {
+                interfaces.Add(accessability, new HashSet<string>());
+            }
         }
 
         public static string GenerateMethodOutput(MethodInfo m, ref HashSet<string> namespaces, ref Dictionary<Visibility,HashSet<string>> interfaces)
@@ -63,19 +113,13 @@ namespace GrassTemplate
 
             if(m.IsPublic)
             {
-                if (interfaces[Visibility.Public] == null)
-                {
-                    interfaces[Visibility.Public] = new HashSet<string>();
-                }
+                InitInterface(ref interfaces, Visibility.Public);
 
                 interfaces[Visibility.Public].Add(methodSigniture + ";");
             }
             else if(m.IsFamilyOrAssembly)
             {
-                if (interfaces[Visibility.Internal] == null)
-                {
-                    interfaces[Visibility.Internal] = new HashSet<string>();
-                }
+                InitInterface(ref interfaces, Visibility.Internal);
 
                 interfaces[Visibility.Internal].Add(methodSigniture + ";");
             }
