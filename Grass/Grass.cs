@@ -14,11 +14,12 @@ namespace GrassTemplate
         {
             var output = new StringBuilder();
             var namespaces = new HashSet<string>() { "System.CodeDom.Compiler" };
+            var interfaces = new Dictionary<Visibility, HashSet<string>>();
 
             var className = GetClassName(qualifiedAssemblyName);
             var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
 
-            var methodsOutput = methods.Select(x=>GenerateMethodOutput(x, ref namespaces)).ToList();
+            var methodsOutput = methods.Select(x=>GenerateMethodOutput(x, ref namespaces, ref interfaces)).ToList();
 
             output.AppendLine(GenerateUsingStatements(namespaces));
             output.AppendLine();
@@ -55,11 +56,31 @@ namespace GrassTemplate
             return output.ToString();
         }
 
-        public static string GenerateMethodOutput(MethodInfo m, ref HashSet<string> namespaces)
+        public static string GenerateMethodOutput(MethodInfo m, ref HashSet<string> namespaces, ref Dictionary<Visibility,HashSet<string>> interfaces)
         {
             var output = new StringBuilder();
+            var methodSigniture = string.Format("//{0} {1}", DetermineType(m.ReturnType, ref namespaces), m.Name);
 
-            output.AppendFormat("//{0} virtual {1} {2}", GetMethodVisibility(m), DetermineType(m.ReturnType, ref namespaces), m.Name);
+            if(m.IsPublic)
+            {
+                if (interfaces[Visibility.Public] == null)
+                {
+                    interfaces[Visibility.Public] = new HashSet<string>();
+                }
+
+                interfaces[Visibility.Public].Add(methodSigniture + ";");
+            }
+            else if(m.IsFamilyOrAssembly)
+            {
+                if (interfaces[Visibility.Internal] == null)
+                {
+                    interfaces[Visibility.Internal] = new HashSet<string>();
+                }
+
+                interfaces[Visibility.Internal].Add(methodSigniture + ";");
+            }
+
+            output.AppendFormat("//{0} virtual {1}", GetMethodVisibility(m),methodSigniture);
 
             return output.ToString();
         }
@@ -81,7 +102,7 @@ namespace GrassTemplate
 
                 return string.Format("{0}<{1}>", name, string.Join(", ",genericParams));
             }
-
+            
             if(t == typeof(void))
             {
                 return "void";
