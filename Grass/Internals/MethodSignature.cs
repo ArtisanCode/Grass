@@ -18,7 +18,7 @@ namespace GrassTemplate.Internals
 
         public string Name { get; set; }
 
-        public ParameterSignature[] Parameters { get; set; }
+        public List<ParameterSignature> Parameters { get; set; }
 
         public MethodInfo BaseInfo { get; set; }
 
@@ -31,6 +31,7 @@ namespace GrassTemplate.Internals
         public MethodSignature()
         {
             RequiredNamespaces = new HashSet<string>();
+            Parameters = new List<ParameterSignature>();
         }
 
         public MethodSignature(MethodInfo info, bool IsVirtual = true): this()
@@ -41,10 +42,9 @@ namespace GrassTemplate.Internals
             Name = info.Name;
             Virtual = IsVirtual;
 
-            var parameterList = new List<ParameterSignature>();
             foreach(var p in info.GetParameters())
             {
-                parameterList.Add(new ParameterSignature(p));
+                Parameters.Add(new ParameterSignature(p));
             }
         }
 
@@ -80,10 +80,10 @@ namespace GrassTemplate.Internals
             return string.Join(", ", output);
         }
 
-        public string ToClassMethod()
+        public string ToClassDefinition()
         {
             return string.Format( 
-                "{0}{1} {2} {3}(4)", 
+                "{0}{1} {2} {3}({4})", 
                 Accessability.ToString().ToLower(),
                 Virtual?" virtual":"",
                 ReturnType,
@@ -91,10 +91,10 @@ namespace GrassTemplate.Internals
                 GetParameterList());
         }
 
-        public string ToInterfaceMethod()
+        public string ToInterfaceDefinition()
         {
             return string.Format(
-                "{2} {3}(4);",
+                "{0} {1}({2});",
                 ReturnType,
                 Name,
                 GetParameterList());
