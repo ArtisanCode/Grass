@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GrassTemplate.Internals;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -20,7 +20,11 @@ namespace GrassTemplate
 
             var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
 
-            var methodsOutput = methods.Select(x=>GenerateMethodOutput(x, ref namespaces, ref interfaces)).ToList();
+            List<string> methodsOutput = new List<string>();            
+            foreach (var m in methods)
+	        {
+                methodsOutput.Add(GenerateMethodOutput(m, ref namespaces, ref interfaces));
+	        }
 
             var callContext = CallContext.LogicalGetData("NamespaceHint");
             var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
@@ -85,7 +89,9 @@ namespace GrassTemplate
         {
             var output = new StringBuilder();
 
-            foreach (var x in namespaces.OrderBy(x=>x))
+            var ns = namespaces.All();
+            Array.Sort(ns);
+            foreach (var x in ns)
             {
                 output.AppendFormat("using {0};{1}", x, Environment.NewLine);
             }
@@ -135,7 +141,7 @@ namespace GrassTemplate
 
             if(t.IsGenericType)
             {
-                var name = t.Name.Split(new[] {'`'}).First();
+                var name = t.Name.Split(new[] {'`'})[0];
 
                 var genericParams = new List<string>();
 
@@ -144,7 +150,7 @@ namespace GrassTemplate
                     genericParams.Add(DetermineType(genericArguement, ref namespaces));
                 }
 
-                return string.Format("{0}<{1}>", name, string.Join(", ",genericParams));
+                return string.Format("{0}<{1}>", name, string.Join(", ", genericParams.ToArray()));
             }
             
             if(t == typeof(void))
@@ -176,41 +182,29 @@ namespace GrassTemplate
             else return "internal";
         }
 
-        public static List<MethodInfo> GetStaticMethods(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public)
+        public static MethodInfo[] GetStaticMethods(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public)
         {
             var type = Type.GetType(qualifiedAssemblyName);
 
             var accessor = BindingFlags.Public;
 
-            if(minimumVisibility.HasFlag(Visibility.Internal) || minimumVisibility.HasFlag(Visibility.Protected) || minimumVisibility.HasFlag(Visibility.Private))
+            if (EnumHelper.HasFlag(minimumVisibility, Visibility.Internal) || 
+                EnumHelper.HasFlag(minimumVisibility, Visibility.Protected) ||
+                EnumHelper.HasFlag(minimumVisibility, Visibility.Private))
             {
                 accessor |= BindingFlags.NonPublic;
             }
 
             var methods = type.GetMethods(accessor | BindingFlags.Static);
-
-            if(!minimumVisibility.HasFlag(Visibility.Private))
-            {
-                methods = methods.Where(x => !x.IsPrivate).ToArray();
-            }
-
-            if (!minimumVisibility.HasFlag(Visibility.Protected))
-            {
-                methods = methods.Where(x => !x.IsFamily).ToArray();
-            }
-
-            if (!minimumVisibility.HasFlag(Visibility.Internal))
-            {
-                methods = methods.Where(x => !x.IsFamilyOrAssembly).ToArray();
-            }
-
-            return methods.OrderBy(x => x.Name).ToList();
+            
+            return methods;
         }
 
         public static string GetClassName(string qualifiedAssemblyName)
         {
-            var classReference = qualifiedAssemblyName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).First();
-            return classReference.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries).Last();
+            var classReference = qualifiedAssemblyName.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)[0];
+            var reference = classReference.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+            return reference[reference.Length - 1];
         }
     }
 }

@@ -20,14 +20,14 @@ namespace GrassTests.Internals
             DetermineTypeTest<byte>("Byte", "System");
             DetermineTypeTest<decimal>("Decimal", "System");
             DetermineTypeTest<float>("Single", "System");
-            DetermineTypeTest<HashSet<string>>("HashSet<String>", "System.Collections.Generic");
+            DetermineTypeTest<List<string>>("List<String>", "System.Collections.Generic");
             DetermineTypeTest<Tuple<string, int, long>>("Tuple<String, Int32, Int64>", "System");
             DetermineTypeTest<List<List<List<List<List<List<string>>>>>>>("List<List<List<List<List<List<String>>>>>>", "System.Collections.Generic");
         }
 
         private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded)
         {
-            var namespaces =  new HashSet<string>();
+            var namespaces =  new GrassTemplate.Internals.HashSet<string>();
 
             var output = TypeHelper.DetermineType(typeof(T), ref namespaces);
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -20,6 +19,7 @@ namespace GrassTemplate.Internals
             get { return _requiredNamespaces; }
             set { _requiredNamespaces = value; }
         }
+
         public ParameterSignature()
         {
             RequiredNamespaces = new HashSet<string>();

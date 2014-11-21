@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -77,7 +76,7 @@ namespace GrassTemplate.Internals
                 output.Add(p.ToParameterDefinition());
             }
 
-            return string.Join(", ", output);
+            return string.Join(", ", output.ToArray());
         }
 
         public string ToClassDefinition()

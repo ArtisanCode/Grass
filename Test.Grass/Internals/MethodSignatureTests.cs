@@ -82,7 +82,6 @@ namespace GrassTests.Internals
                 "MethodSignatureTests",
                 new List<ParameterSignature>(Builder<ParameterSignature>.CreateListOfSize(2).Build()),
                 "private virtual Int64 MethodSignatureTests(Type1 Name1, Type2 Name2)");
-
         }
 
         private void ToClassDefinitionTest(Visibility vis, bool virt, string returnType, string name, List<ParameterSignature> param, string expectedOutput)
@@ -99,7 +98,6 @@ namespace GrassTests.Internals
 
             Assert.AreEqual(expectedOutput, actualOutput);
         }
-
 
         [TestMethod]
         public void ToInterfaceDefinition_DefinitionCreatedSucessfully()
@@ -127,7 +125,6 @@ namespace GrassTests.Internals
                 "MethodSignatureTests",
                 new List<ParameterSignature>(Builder<ParameterSignature>.CreateListOfSize(2).Build()),
                 "Int64 MethodSignatureTests(Type1 Name1, Type2 Name2);");
-
         }
 
         private void ToInterfaceDefinitionTest(string returnType, string name, List<ParameterSignature> param, string expectedOutput)
