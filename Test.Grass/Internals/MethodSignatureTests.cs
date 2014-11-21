@@ -99,6 +99,49 @@ namespace GrassTests.Internals
 
             Assert.AreEqual(expectedOutput, actualOutput);
         }
+
+
+        [TestMethod]
+        public void ToInterfaceDefinition_DefinitionCreatedSucessfully()
+        {
+            ToInterfaceDefinitionTest(
+                "void",
+                "MethodSignatureTests",
+                new List<ParameterSignature>() { new ParameterSignature() { Name = "path", Type = "String" } },
+                "void MethodSignatureTests(String path);");
+
+            ToInterfaceDefinitionTest(
+                "void",
+                "MethodSignatureTests",
+                new List<ParameterSignature>(),
+                "void MethodSignatureTests();");
+
+            ToInterfaceDefinitionTest(
+                "List<String>",
+                "MethodSignatureTests",
+                new List<ParameterSignature>(Builder<ParameterSignature>.CreateListOfSize(3).Build()),
+                "List<String> MethodSignatureTests(Type1 Name1, Type2 Name2, Type3 Name3);");
+
+            ToInterfaceDefinitionTest(
+                "Int64",
+                "MethodSignatureTests",
+                new List<ParameterSignature>(Builder<ParameterSignature>.CreateListOfSize(2).Build()),
+                "Int64 MethodSignatureTests(Type1 Name1, Type2 Name2);");
+
+        }
+
+        private void ToInterfaceDefinitionTest(string returnType, string name, List<ParameterSignature> param, string expectedOutput)
+        {
+            var localTestObj = new MethodSignature();
+
+            localTestObj.ReturnType = returnType;
+            localTestObj.Name = name;
+            localTestObj.Parameters = param;
+
+            var actualOutput = localTestObj.ToInterfaceDefinition();
+
+            Assert.AreEqual(expectedOutput, actualOutput);
+        }
         
         [TestInitialize]
         public void __init()
