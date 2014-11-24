@@ -79,6 +79,16 @@ namespace GrassTemplate.Internals
             return string.Join(", ", output.ToArray());
         }
 
+        public HashSet<string> GetRequiredNamespaces()
+        {
+            foreach(var p in Parameters)
+            {
+                RequiredNamespaces.Combine(p.RequiredNamespaces);
+            }
+
+            return RequiredNamespaces;
+        }
+
         public string ToClassDefinition()
         {
             return string.Format( 
