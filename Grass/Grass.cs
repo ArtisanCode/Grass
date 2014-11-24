@@ -10,33 +10,36 @@ namespace GrassTemplate
     public static class Grass
     {
         public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{1}\")]", "ArtisanCode.Grass", Assembly.GetAssembly(typeof(Grass)).GetName().Version); } }
+        
         public static string Static(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
         {
-            var output = new StringBuilder();
-            var namespaces = new HashSet<string>() { "System.CodeDom.Compiler" };
-            var interfaces = new Dictionary<Visibility, HashSet<string>>();
 
-            var className = GetClassName(qualifiedAssemblyName);
+            return "";
+            //var output = new StringBuilder();
+            //var namespaces = new HashSet<string>() { "System.CodeDom.Compiler" };
+            //var interfaces = new Dictionary<Visibility, HashSet<string>>();
 
-            var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
+            //var className = GenerateNames(qualifiedAssemblyName);
 
-            List<string> methodsOutput = new List<string>();            
-            foreach (var m in methods)
-	        {
-                methodsOutput.Add(GenerateMethodOutput(m, ref namespaces, ref interfaces));
-	        }
+            //var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
 
-            var callContext = CallContext.LogicalGetData("NamespaceHint");
-            var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
+            //List<string> methodsOutput = new List<string>();            
+            //foreach (var m in methods)
+            //{
+            //    methodsOutput.Add(GenerateMethodOutput(m, ref namespaces, ref interfaces));
+            //}
 
-            output.AppendLine(GenerateUsingStatements(namespaces));
-            output.AppendLine();
+            //var callContext = CallContext.LogicalGetData("NamespaceHint");
+            //var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
 
-            output.AppendLine(GenerateInterfaceCode(className, methodsOutput, interfaces, ns));
+            //output.AppendLine(GenerateUsingStatements(namespaces));
+            //output.AppendLine();
 
-            output.AppendLine(GenerateClassCode(className, partial, methodsOutput, ns));
+            //output.AppendLine(GenerateInterfaceCode(className, methodsOutput, interfaces, ns));
 
-            return output.ToString();
+            //output.AppendLine(GenerateClassCode(className, partial, methodsOutput, ns));
+
+            //return output.ToString();
         }
         public static string GenerateInterfaceCode(string className, List<string> methodsOutput, Dictionary<Visibility, HashSet<string>> interfaces, string ns)
         {

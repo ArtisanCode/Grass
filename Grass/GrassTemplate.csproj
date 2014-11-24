@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Grass.cs" />
+    <Compile Include="Internals\ClassDefinition.cs" />
     <Compile Include="Internals\EnumHelper.cs" />
     <Compile Include="Internals\HashSet.cs" />
     <Compile Include="Internals\MethodSignature.cs" />
