@@ -28,8 +28,8 @@ namespace GrassTemplate.Internals
         public ParameterSignature(ParameterInfo info) : this()
         {
             BaseInfo = info;
-            Type = TypeHelper.DetermineType(info.ParameterType, ref _requiredNamespaces);
             Name = info.Name;
+            Type = TypeHelper.DetermineType(info.ParameterType, ref _requiredNamespaces);
         }
 
         public string ToParameterDefinition()

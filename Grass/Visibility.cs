@@ -7,9 +7,9 @@ namespace GrassTemplate
     [Flags]
     public enum Visibility
     {
-        Public,
-        Internal,
+        Private,
         Protected,
-        Private
+        Internal,
+        Public
     }
 }

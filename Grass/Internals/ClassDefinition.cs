@@ -15,12 +15,15 @@ namespace GrassTemplate.Internals
 
         public Visibility MinimumVisibility { get; set; }
 
-        List<MethodSignature> Methods { get; set; }
-
+        public List<MethodSignature> Methods { get; set; }
+        
         public bool IsPartial { get; set; }
+        
+        public HashSet<string> RequiredNamespaces { get; set; }
 
         public ClassDefinition(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool isPartial = true)
         {
+            RequiredNamespaces = new HashSet<string>();
             QualifiedAssemblyName = qualifiedAssemblyName;
             MinimumVisibility = minimumVisibility;
             IsPartial = isPartial;
@@ -67,6 +70,16 @@ namespace GrassTemplate.Internals
             {
                 Methods.Add(new MethodSignature(info));
             }
+        }
+
+        public HashSet<string> GetRequiredNamespaces()
+        {
+            foreach (var m in Methods)
+            {
+                RequiredNamespaces.Combine(m.GetRequiredNamespaces());
+            }
+
+            return RequiredNamespaces;
         }
     }
 }

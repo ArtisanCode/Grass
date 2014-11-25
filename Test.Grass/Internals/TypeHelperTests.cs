@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using GrassTemplate.Internals;
+using System.Text;
 
 namespace GrassTests.Internals
 {
@@ -23,6 +24,7 @@ namespace GrassTests.Internals
             DetermineTypeTest<List<string>>("List<String>", "System.Collections.Generic");
             DetermineTypeTest<Tuple<string, int, long>>("Tuple<String, Int32, Int64>", "System");
             DetermineTypeTest<List<List<List<List<List<List<string>>>>>>>("List<List<List<List<List<List<String>>>>>>", "System.Collections.Generic");
+            DetermineTypeTest<Encoding>("Encoding", "System.Text");
         }
 
         private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded)

@@ -90,17 +90,19 @@ namespace GrassTemplate.Internals
             Data.OnDeserialization(sender);
         }
 
-        public void Combine(HashSet<T> input)
+        public HashSet<T> Combine(HashSet<T> input)
         {
             if(input == null || input.Count == 0)
             {
-                return;
+                return this;
             }
 
             foreach (var key in input)
             {
                 Add(key);
             }
+
+            return this;
         }
     }
 }

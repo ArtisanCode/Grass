@@ -13,10 +13,21 @@ namespace GrassTemplate
         
         public static string Static(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
         {
+            var output = new StringBuilder();
 
-            return "";
-            //var output = new StringBuilder();
-            //var namespaces = new HashSet<string>() { "System.CodeDom.Compiler" };
+            var callContext = CallContext.LogicalGetData("NamespaceHint");
+            var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
+
+            var staticClass = new ClassDefinition(qualifiedAssemblyName, minimumVisibility, partial);
+            staticClass.PopulateStaticMethods();
+
+            var namespaces = staticClass.GetRequiredNamespaces();
+            namespaces.Add("System.CodeDom.Compiler"); // Required for the class generated attribute
+
+            output.AppendLine(GenerateUsingStatements(namespaces));
+            output.AppendLine(GenerateInterfaceCode(staticClass, ns));
+
+            return output.ToString();
             //var interfaces = new Dictionary<Visibility, HashSet<string>>();
 
             //var className = GenerateNames(qualifiedAssemblyName);
@@ -29,8 +40,6 @@ namespace GrassTemplate
             //    methodsOutput.Add(GenerateMethodOutput(m, ref namespaces, ref interfaces));
             //}
 
-            //var callContext = CallContext.LogicalGetData("NamespaceHint");
-            //var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
 
             //output.AppendLine(GenerateUsingStatements(namespaces));
             //output.AppendLine();
@@ -41,47 +50,69 @@ namespace GrassTemplate
 
             //return output.ToString();
         }
-        public static string GenerateInterfaceCode(string className, List<string> methodsOutput, Dictionary<Visibility, HashSet<string>> interfaces, string ns)
+
+        public static string GenerateInterfaceCode(ClassDefinition classDef, string ns)
         {
             StringBuilder output = new StringBuilder();
-
-            foreach (var i in interfaces)
-            {
-                output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
-
-                output.AppendLine("{");
-                output.AppendLine(Indent(1) + GeneratedCodeTag);
-                output.AppendFormat("{0}{1} interface I{2}{3} {4}", Indent(1), i.Key.ToString().ToLower(), className, i.Key == Visibility.Public ? "" : i.Key.ToString(), Environment.NewLine);
-                output.AppendLine(Indent(1) + "{");
-                foreach (var m in methodsOutput)
-                {
-                    output.AppendLine(Indent(2) + m.Replace(i.Key.ToString(),"") + ";");
-                }
-                output.AppendLine(Indent(1) + "}");
-                output.AppendLine("}");
-            }
-
-            return output.ToString();
-        }
-
-        public static string GenerateClassCode(string className, bool partial, List<string> methodsOutput, string ns)
-        {
-            StringBuilder output = new StringBuilder();
-
+            
             output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
+
             output.AppendLine("{");
             output.AppendLine(Indent(1) + GeneratedCodeTag);
-            output.AppendFormat("{0}public {1} class {2}Wrapper : {3} {4}", Indent(1), (partial ? "partial" : ""), className, "I"+className, Environment.NewLine);
+            output.AppendLine(Indent(1) + classDef.GetInterfaceSignature());
             output.AppendLine(Indent(1) + "{");
-            foreach (var m in methodsOutput)
+
+            foreach (var m in classDef.Methods)
             {
-                output.AppendLine(Indent(2) + m);
+                output.AppendLine(Indent(2) + m.ToInterfaceDefinition());
             }
             output.AppendLine(Indent(1) + "}");
             output.AppendLine("}");
 
             return output.ToString();
         }
+
+        //public static string GenerateInterfaceCode(string className, List<string> methodsOutput, Dictionary<Visibility, HashSet<string>> interfaces, string ns)
+        //{
+        //    StringBuilder output = new StringBuilder();
+
+        //    foreach (var i in interfaces)
+        //    {
+        //        output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
+
+        //        output.AppendLine("{");
+        //        output.AppendLine(Indent(1) + GeneratedCodeTag);
+        //        output.AppendFormat("{0}{1} interface I{2}{3} {4}", Indent(1), i.Key.ToString().ToLower(), className, i.Key == Visibility.Public ? "" : i.Key.ToString(), Environment.NewLine);
+        //        output.AppendLine(Indent(1) + "{");
+        //        foreach (var m in methodsOutput)
+        //        {
+        //            output.AppendLine(Indent(2) + m.Replace(i.Key.ToString(),"") + ";");
+        //        }
+        //        output.AppendLine(Indent(1) + "}");
+        //        output.AppendLine("}");
+        //    }
+
+        //    return output.ToString();
+        //}
+
+        //public static string GenerateClassCode(string className, bool partial, List<string> methodsOutput, string ns)
+        //{
+        //    StringBuilder output = new StringBuilder();
+
+        //    output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
+        //    output.AppendLine("{");
+        //    output.AppendLine(Indent(1) + GeneratedCodeTag);
+        //    output.AppendFormat("{0}public {1} class {2}Wrapper : {3} {4}", Indent(1), (partial ? "partial" : ""), className, "I"+className, Environment.NewLine);
+        //    output.AppendLine(Indent(1) + "{");
+        //    foreach (var m in methodsOutput)
+        //    {
+        //        output.AppendLine(Indent(2) + m);
+        //    }
+        //    output.AppendLine(Indent(1) + "}");
+        //    output.AppendLine("}");
+
+        //    return output.ToString();
+        //}
 
         public static string Indent(int level) 
         {

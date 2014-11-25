@@ -68,7 +68,7 @@ namespace GrassTests
         [TestMethod]
         public void Static_OutputGenerated_NoExceptions()
         {
-            var output = Grass.Static("System.IO.File");
+            var output = Grass.Static("ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass");
         }
     }
 }
