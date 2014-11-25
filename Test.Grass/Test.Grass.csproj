@@ -60,6 +60,7 @@
     <Compile Include="Internals\MethodSignatureTests.cs" />
     <Compile Include="Internals\ParameterSignatureTests.cs" />
     <Compile Include="Internals\TypeHelperTests.cs" />
+    <Compile Include="Internals\ClassDefinitionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClass.cs" />
   </ItemGroup>

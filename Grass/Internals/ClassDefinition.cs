@@ -27,9 +27,14 @@ namespace GrassTemplate.Internals
             GenerateNames();
         }
 
-        public string GetClassSignature()
+        public string GetClassSignature(string accessability = "public")
         {
-            return string.Format("public {1} class {2}Wrapper : {3}", (IsPartial ? "partial" : ""), ClassName, InterfaceName);
+            return string.Format("{0}{1} class {2}Wrapper : {3}", accessability, (IsPartial ? " partial" : ""), ClassName, InterfaceName);
+        }
+        
+        public string GetInterfaceSignature(string accessability = "public")
+        {
+            return string.Format("{0} interface {1}", accessability, InterfaceName);
         }
 
         public void GenerateNames()
@@ -40,19 +45,11 @@ namespace GrassTemplate.Internals
             ClassName = reference[reference.Length - 1];
             InterfaceName = "I" + ClassName;
         }
-
+        
         public void PopulateStaticMethods()
         {
-            var methods = GetStaticMethods();
+            Methods = new List<MethodSignature>();
 
-            foreach(var info in methods)
-            {
-                Methods.Add(new MethodSignature(info));
-            }
-        }
-
-        public MethodInfo[] GetStaticMethods()
-        {
             var type = Type.GetType(QualifiedAssemblyName);
 
             var accessor = BindingFlags.Public;
@@ -65,8 +62,11 @@ namespace GrassTemplate.Internals
             }
 
             var methods = type.GetMethods(accessor | BindingFlags.Static);
-
-            return methods;
+            
+            foreach (var info in methods)
+            {
+                Methods.Add(new MethodSignature(info));
+            }
         }
     }
 }
