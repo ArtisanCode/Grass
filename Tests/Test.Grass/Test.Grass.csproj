@@ -65,11 +65,11 @@
     <Compile Include="TestClass.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Examples\UsingGrass\UsingGrass.csproj">
+    <ProjectReference Include="..\..\Examples\UsingGrass\UsingGrass.csproj">
       <Project>{4fbf238c-3b44-48fc-92e0-8ac9f24b5ab0}</Project>
       <Name>UsingGrass</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Grass\GrassTemplate.csproj">
+    <ProjectReference Include="..\..\Src\Grass\GrassTemplate.csproj">
       <Project>{63ad8324-c978-41a6-9294-8bce6bb8c967}</Project>
       <Name>GrassTemplate</Name>
     </ProjectReference>
