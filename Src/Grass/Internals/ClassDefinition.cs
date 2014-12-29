@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -74,11 +75,7 @@ namespace GrassTemplate.Internals
 
         public HashSet<string> GetRequiredNamespaces()
         {
-            foreach (var m in Methods)
-            {
-                RequiredNamespaces.Combine(m.GetRequiredNamespaces());
-            }
-
+            Methods.SelectMany(m => m.GetRequiredNamespaces()).ToList().ForEach(n => RequiredNamespaces.Add(n));
             return RequiredNamespaces;
         }
     }

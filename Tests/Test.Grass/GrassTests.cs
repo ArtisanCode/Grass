@@ -54,9 +54,9 @@ namespace GrassTests
             DetermineTypeTest<List<List<List<List<List<List<string>>>>>>>("List<List<List<List<List<List<String>>>>>>", "System.Collections.Generic");
         }
 
-        private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded, GrassTemplate.Internals.HashSet<string> existingNamespaces = null )
+        private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded, HashSet<string> existingNamespaces = null )
         {
-            var namespaces = existingNamespaces ?? new GrassTemplate.Internals.HashSet<string>();
+            var namespaces = existingNamespaces ?? new HashSet<string>();
 
             var output = Grass.DetermineType(typeof(T), ref namespaces);
 

@@ -1,16 +1,78 @@
 ﻿using GrassTemplate.Internals;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
+using System.Linq;
+using System.CodeDom.Compiler;
+using System.IO;
+using Microsoft.VisualStudio.TextTemplating;
 
 namespace GrassTemplate
 {
     public static class Grass
     {
         public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{1}\")]", "ArtisanCode.Grass", Assembly.GetAssembly(typeof(Grass)).GetName().Version); } }
-        
+
+        public static void StaticCodeGen(ITextTemplatingEngineHost host, string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
+        {
+            var callContext = CallContext.LogicalGetData("NamespaceHint");
+            var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
+
+            var staticClass = new ClassDefinition(qualifiedAssemblyName, minimumVisibility, partial);
+            staticClass.PopulateStaticMethods();
+
+            var namespaces = staticClass.GetRequiredNamespaces();
+            namespaces.Add("System.CodeDom.Compiler"); // Required for the class generated attribute
+
+            var emittedInterface = EmitInterface(ns, staticClass, namespaces, minimumVisibility);
+
+            string templateDirectory = Path.GetDirectoryName(host.TemplateFile);
+            string outputFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
+
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            CodeGeneratorOptions options = new CodeGeneratorOptions();
+            options.BracingStyle = "C";
+            using (StreamWriter sourceWriter = new StreamWriter(outputFilePath))
+            {
+                provider.GenerateCodeFromCompileUnit(emittedInterface.Item2, sourceWriter, options);
+            }
+
+            //File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString());
+
+            //this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+        }
+
+        private static Tuple<string,CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, HashSet<string> usingNamespaces, Visibility minimumVisibility)
+        {
+            CodeCompileUnit targetUnit = new CodeCompileUnit();
+
+            string outputFileName = string.Format("{0}.cs", staticClass.InterfaceName);
+
+            CodeNamespace emittedNamespace = new CodeNamespace(targetNamespace);
+            staticClass.GetRequiredNamespaces().ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
+
+            CodeTypeDeclaration targetInterface= new CodeTypeDeclaration(staticClass.InterfaceName);
+            targetInterface.IsInterface = true;
+
+            if(minimumVisibility.HasFlag(Visibility.Internal))
+            {
+                targetInterface.TypeAttributes = TypeAttributes.NestedAssembly | TypeAttributes.NotPublic;
+            }
+            else
+            {
+                targetInterface.TypeAttributes = TypeAttributes.Public;
+            }
+
+            emittedNamespace.Types.Add(targetInterface);
+
+            targetUnit.Namespaces.Add(emittedNamespace);
+
+            return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
+        }
+
         public static string Static(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
         {
             var output = new StringBuilder();
@@ -28,27 +90,6 @@ namespace GrassTemplate
             output.AppendLine(GenerateInterfaceCode(staticClass, ns));
 
             return output.ToString();
-            //var interfaces = new Dictionary<Visibility, HashSet<string>>();
-
-            //var className = GenerateNames(qualifiedAssemblyName);
-
-            //var methods = GetStaticMethods(qualifiedAssemblyName, minimumVisibility);
-
-            //List<string> methodsOutput = new List<string>();            
-            //foreach (var m in methods)
-            //{
-            //    methodsOutput.Add(GenerateMethodOutput(m, ref namespaces, ref interfaces));
-            //}
-
-
-            //output.AppendLine(GenerateUsingStatements(namespaces));
-            //output.AppendLine();
-
-            //output.AppendLine(GenerateInterfaceCode(className, methodsOutput, interfaces, ns));
-
-            //output.AppendLine(GenerateClassCode(className, partial, methodsOutput, ns));
-
-            //return output.ToString();
         }
 
         public static string GenerateInterfaceCode(ClassDefinition classDef, string ns)
@@ -72,48 +113,6 @@ namespace GrassTemplate
             return output.ToString();
         }
 
-        //public static string GenerateInterfaceCode(string className, List<string> methodsOutput, Dictionary<Visibility, HashSet<string>> interfaces, string ns)
-        //{
-        //    StringBuilder output = new StringBuilder();
-
-        //    foreach (var i in interfaces)
-        //    {
-        //        output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
-
-        //        output.AppendLine("{");
-        //        output.AppendLine(Indent(1) + GeneratedCodeTag);
-        //        output.AppendFormat("{0}{1} interface I{2}{3} {4}", Indent(1), i.Key.ToString().ToLower(), className, i.Key == Visibility.Public ? "" : i.Key.ToString(), Environment.NewLine);
-        //        output.AppendLine(Indent(1) + "{");
-        //        foreach (var m in methodsOutput)
-        //        {
-        //            output.AppendLine(Indent(2) + m.Replace(i.Key.ToString(),"") + ";");
-        //        }
-        //        output.AppendLine(Indent(1) + "}");
-        //        output.AppendLine("}");
-        //    }
-
-        //    return output.ToString();
-        //}
-
-        //public static string GenerateClassCode(string className, bool partial, List<string> methodsOutput, string ns)
-        //{
-        //    StringBuilder output = new StringBuilder();
-
-        //    output.AppendFormat("namespace {0}{1}", ns, Environment.NewLine);
-        //    output.AppendLine("{");
-        //    output.AppendLine(Indent(1) + GeneratedCodeTag);
-        //    output.AppendFormat("{0}public {1} class {2}Wrapper : {3} {4}", Indent(1), (partial ? "partial" : ""), className, "I"+className, Environment.NewLine);
-        //    output.AppendLine(Indent(1) + "{");
-        //    foreach (var m in methodsOutput)
-        //    {
-        //        output.AppendLine(Indent(2) + m);
-        //    }
-        //    output.AppendLine(Indent(1) + "}");
-        //    output.AppendLine("}");
-
-        //    return output.ToString();
-        //}
-
         public static string Indent(int level) 
         {
             return new string(' ', level * 4);
@@ -123,9 +122,7 @@ namespace GrassTemplate
         {
             var output = new StringBuilder();
 
-            var ns = namespaces.All();
-            Array.Sort(ns);
-            foreach (var x in ns)
+            foreach (var x in namespaces.OrderBy(x=>x))
             {
                 output.AppendFormat("using {0};{1}", x, Environment.NewLine);
             }

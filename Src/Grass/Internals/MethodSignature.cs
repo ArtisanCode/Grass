@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace GrassTemplate.Internals
 {
@@ -81,12 +82,8 @@ namespace GrassTemplate.Internals
 
         public HashSet<string> GetRequiredNamespaces()
         {
-            foreach(var p in Parameters)
-            {
-                RequiredNamespaces.Combine(p.RequiredNamespaces);
-            }
-
-            return RequiredNamespaces;
+            Parameters.SelectMany(p => p.RequiredNamespaces).ToList().ForEach(n => RequiredNamespaces.Add(n));
+            return RequiredNamespaces;            
         }
 
         public string ToClassDefinition()

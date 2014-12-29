@@ -29,7 +29,7 @@ namespace GrassTests.Internals
 
         private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded)
         {
-            var namespaces =  new GrassTemplate.Internals.HashSet<string>();
+            var namespaces =  new HashSet<string>();
 
             var output = TypeHelper.DetermineType(typeof(T), ref namespaces);
 
