@@ -9,6 +9,7 @@ using System.Linq;
 using System.CodeDom.Compiler;
 using System.IO;
 using Microsoft.VisualStudio.TextTemplating;
+using EnvDTE;
 
 namespace GrassTemplate
 {
@@ -38,11 +39,14 @@ namespace GrassTemplate
             using (StreamWriter sourceWriter = new StreamWriter(outputFilePath))
             {
                 provider.GenerateCodeFromCompileUnit(emittedInterface.Item2, sourceWriter, options);
+                sourceWriter.Flush();
             }
 
-            //File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString());
+            IServiceProvider hostServiceProvider = (IServiceProvider)host;
+            DTE dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
 
-            //this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+            var projectItem = dte.Solution.FindProjectItem(host.TemplateFile);
+            projectItem.ProjectItems.AddFromFile(outputFilePath);
         }
 
         private static Tuple<string,CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, HashSet<string> usingNamespaces, Visibility minimumVisibility)
@@ -51,10 +55,11 @@ namespace GrassTemplate
 
             string outputFileName = string.Format("{0}.cs", staticClass.InterfaceName);
 
-            CodeNamespace emittedNamespace = new CodeNamespace(targetNamespace);
+            System.CodeDom.CodeNamespace emittedNamespace = new System.CodeDom.CodeNamespace(targetNamespace);
             staticClass.GetRequiredNamespaces().ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
 
             CodeTypeDeclaration targetInterface= new CodeTypeDeclaration(staticClass.InterfaceName);
+            targetInterface.IsClass = false;
             targetInterface.IsInterface = true;
 
             if(minimumVisibility.HasFlag(Visibility.Internal))

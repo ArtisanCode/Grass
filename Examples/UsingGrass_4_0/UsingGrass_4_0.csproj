@@ -40,9 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="File.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="IFile.cs">
       <DependentUpon>File.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,7 +54,6 @@
   <ItemGroup>
     <None Include="File.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>File.cs</LastGenOutput>
     </None>
     <None Include="TestStaticClassWrapper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
