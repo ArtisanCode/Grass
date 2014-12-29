@@ -20,7 +20,7 @@ namespace ArtisanCode.UsingGrass
     using System.CodeDom.Compiler;
     
     
-    internal class IFile
+    public interface IFile
     {
     }
 }

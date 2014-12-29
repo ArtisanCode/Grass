@@ -58,18 +58,17 @@ namespace GrassTemplate
             System.CodeDom.CodeNamespace emittedNamespace = new System.CodeDom.CodeNamespace(targetNamespace);
             staticClass.GetRequiredNamespaces().ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
 
-            CodeTypeDeclaration targetInterface= new CodeTypeDeclaration(staticClass.InterfaceName);
-            targetInterface.IsClass = false;
-            targetInterface.IsInterface = true;
+            CodeTypeDeclaration targetInterface = new CodeTypeDeclaration(staticClass.InterfaceName);
 
-            if(minimumVisibility.HasFlag(Visibility.Internal))
-            {
-                targetInterface.TypeAttributes = TypeAttributes.NestedAssembly | TypeAttributes.NotPublic;
-            }
-            else
+            if(minimumVisibility.HasFlag(Visibility.Public))
             {
                 targetInterface.TypeAttributes = TypeAttributes.Public;
             }
+            else
+            {
+                targetInterface.TypeAttributes = TypeAttributes.NestedAssembly | TypeAttributes.NotPublic;
+            }
+            targetInterface.IsInterface = true;
 
             emittedNamespace.Types.Add(targetInterface);
 
