@@ -40,13 +40,13 @@ namespace GrassTemplate
             {
                 provider.GenerateCodeFromCompileUnit(emittedInterface.Item2, sourceWriter, options);
                 sourceWriter.Flush();
+
+                IServiceProvider hostServiceProvider = (IServiceProvider)host;
+                DTE dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
+
+                var projectItem = dte.Solution.FindProjectItem(host.TemplateFile);
+                projectItem.ProjectItems.AddFromFile(outputFilePath);
             }
-
-            IServiceProvider hostServiceProvider = (IServiceProvider)host;
-            DTE dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
-
-            var projectItem = dte.Solution.FindProjectItem(host.TemplateFile);
-            projectItem.ProjectItems.AddFromFile(outputFilePath);
         }
 
         private static Tuple<string,CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, HashSet<string> usingNamespaces, Visibility minimumVisibility)
