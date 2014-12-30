@@ -9,16 +9,13 @@ namespace GrassTemplate.Internals
 {
     public class CodeGen
     {
-
-
-        public Tuple<string, CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, HashSet<string> usingNamespaces, Visibility minimumVisibility)
+        
+        public Tuple<string, CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, Visibility minimumVisibility)
         {
             CodeCompileUnit targetUnit = new CodeCompileUnit();
+            CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
 
             string outputFileName = string.Format("{0}.cs", staticClass.InterfaceName);
-
-            System.CodeDom.CodeNamespace emittedNamespace = new System.CodeDom.CodeNamespace(targetNamespace);
-            staticClass.GetRequiredNamespaces().OrderBy(x => x).ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
 
             CodeTypeDeclaration targetInterface = new CodeTypeDeclaration(staticClass.InterfaceName);
 
@@ -59,6 +56,19 @@ namespace GrassTemplate.Internals
 
                 targetInterface.Members.Add(method);
             }
+        }
+
+        public CodeNamespace GenerateEmittedNamespace(string targetNamespace, ClassDefinition staticClass)
+        {
+            CodeNamespace result = new CodeNamespace(targetNamespace);
+
+            var ns = staticClass.GetRequiredNamespaces();
+            ns.Add("System.CodeDom.Compiler"); // Required for the class generated attribute"
+
+            ns.OrderBy(x => x).ToList().ForEach(n => result.Imports.Add(new CodeNamespaceImport(n)));
+
+            return result;
+
         }
     }
 }

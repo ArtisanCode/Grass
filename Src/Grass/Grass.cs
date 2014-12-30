@@ -25,12 +25,9 @@ namespace GrassTemplate
             var staticClass = new ClassDefinition(qualifiedAssemblyName, minimumVisibility, partial);
             staticClass.PopulateStaticMethods();
 
-            var namespaces = staticClass.GetRequiredNamespaces();
-            namespaces.Add("System.CodeDom.Compiler"); // Required for the class generated attribute
-
             var engine = new CodeGen();
 
-            var emittedInterface = engine.EmitInterface(ns, staticClass, namespaces, minimumVisibility);
+            var emittedInterface = engine.EmitInterface(ns, staticClass, minimumVisibility);
 
             string templateDirectory = Path.GetDirectoryName(host.TemplateFile);
             string outputFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
