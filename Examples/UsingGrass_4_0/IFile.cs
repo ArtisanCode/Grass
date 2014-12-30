@@ -10,7 +10,17 @@
 
 namespace ArtisanCode.UsingGrass
 {
-    [System.CodeDom.Compiler.GeneratedCode("0.0.0.1", "ArtisanCode.Grass")]
+    using Microsoft.Win32;
+    using Microsoft.Win32.SafeHandles;
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Security.AccessControl;
+    using System.Text;
+    
+    
+    [GeneratedCode("0.0.0.1", "ArtisanCode.Grass")]
     public interface IFile
     {
         

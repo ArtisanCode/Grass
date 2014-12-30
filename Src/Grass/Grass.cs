@@ -28,75 +28,37 @@ namespace GrassTemplate
             var namespaces = staticClass.GetRequiredNamespaces();
             namespaces.Add("System.CodeDom.Compiler"); // Required for the class generated attribute
 
-            var emittedInterface = EmitInterface(ns, staticClass, namespaces, minimumVisibility);
+            var engine = new CodeGen();
+
+            var emittedInterface = engine.EmitInterface(ns, staticClass, namespaces, minimumVisibility);
 
             string templateDirectory = Path.GetDirectoryName(host.TemplateFile);
             string outputFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
 
+            WriteCodefileToDisk(emittedInterface.Item2, outputFilePath);
+
+            AddFileToTemplate(host, outputFilePath);
+        }
+
+        private static void WriteCodefileToDisk(CodeCompileUnit emittedInterface, string outputFilePath)
+        {
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
             CodeGeneratorOptions options = new CodeGeneratorOptions();
             options.BracingStyle = "C";
             using (StreamWriter sourceWriter = new StreamWriter(outputFilePath))
             {
-                provider.GenerateCodeFromCompileUnit(emittedInterface.Item2, sourceWriter, options);
+                provider.GenerateCodeFromCompileUnit(emittedInterface, sourceWriter, options);
                 sourceWriter.Flush();
-
-                IServiceProvider hostServiceProvider = (IServiceProvider)host;
-                DTE dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
-
-                var projectItem = dte.Solution.FindProjectItem(host.TemplateFile);
-                projectItem.ProjectItems.AddFromFile(outputFilePath);
             }
         }
 
-        private static Tuple<string,CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, HashSet<string> usingNamespaces, Visibility minimumVisibility)
+        private static void AddFileToTemplate(ITextTemplatingEngineHost host, string outputFilePath)
         {
-            CodeCompileUnit targetUnit = new CodeCompileUnit();
+            IServiceProvider hostServiceProvider = (IServiceProvider)host;
+            DTE dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
 
-            string outputFileName = string.Format("{0}.cs", staticClass.InterfaceName);
-
-            System.CodeDom.CodeNamespace emittedNamespace = new System.CodeDom.CodeNamespace(targetNamespace);
-            staticClass.GetRequiredNamespaces().OrderBy(x=>x).ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
-
-            CodeTypeDeclaration targetInterface = new CodeTypeDeclaration(staticClass.InterfaceName);
-
-            if(minimumVisibility.HasFlag(Visibility.Public))
-            {
-                targetInterface.TypeAttributes = TypeAttributes.Public;
-            }
-            else
-            {
-                targetInterface.TypeAttributes = TypeAttributes.NestedAssembly | TypeAttributes.NotPublic;
-            }
-            targetInterface.IsInterface = true;
-
-            targetInterface.CustomAttributes.Add(new CodeAttributeDeclaration("GeneratedCode", new CodeAttributeArgument(  new CodePrimitiveExpression(Assembly.GetAssembly(typeof(Grass)).GetName().Version.ToString())),  new CodeAttributeArgument(  new CodePrimitiveExpression("ArtisanCode.Grass"))));
-
-            EmitInterfaceMethods(ref targetInterface, staticClass, minimumVisibility);
-
-            emittedNamespace.Types.Add(targetInterface);
-
-            targetUnit.Namespaces.Add(emittedNamespace);
-
-            return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
-        }
-
-        private static void EmitInterfaceMethods(ref CodeTypeDeclaration targetInterface, ClassDefinition staticClass, Visibility minimumVisibility)
-        {
-            foreach (var m in staticClass.Methods.Where(x=>x.Accessability >= minimumVisibility).OrderBy(x=>x.Name))
-            {
-                CodeMemberMethod method = new CodeMemberMethod();
-
-                method.Name = m.Name;
-                method.ReturnType = new CodeTypeReference(m.Info.ReturnType);
-
-                foreach(var p in m.Parameters)
-                {
-                    method.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(p.Info.ParameterType), p.Name));
-                }
-
-                targetInterface.Members.Add(method);
-            }
+            var projectItem = dte.Solution.FindProjectItem(host.TemplateFile);
+            projectItem.ProjectItems.AddFromFile(outputFilePath);
         }
 
         public static string Static(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
