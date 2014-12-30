@@ -13,7 +13,7 @@ namespace GrassTemplate.Internals
 
         public string Name { get; set; }
 
-        public ParameterInfo BaseInfo { get; set; }
+        public ParameterInfo Info { get; set; }
 
         public HashSet<string> RequiredNamespaces {
             get { return _requiredNamespaces; }
@@ -27,7 +27,7 @@ namespace GrassTemplate.Internals
 
         public ParameterSignature(ParameterInfo info) : this()
         {
-            BaseInfo = info;
+            Info = info;
             Name = info.Name;
             Type = TypeHelper.DetermineType(info.ParameterType, ref _requiredNamespaces);
         }

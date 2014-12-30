@@ -56,7 +56,7 @@ namespace GrassTemplate
             string outputFileName = string.Format("{0}.cs", staticClass.InterfaceName);
 
             System.CodeDom.CodeNamespace emittedNamespace = new System.CodeDom.CodeNamespace(targetNamespace);
-            staticClass.GetRequiredNamespaces().ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
+            staticClass.GetRequiredNamespaces().OrderBy(x=>x).ToList().ForEach(n => emittedNamespace.Imports.Add(new CodeNamespaceImport(n)));
 
             CodeTypeDeclaration targetInterface = new CodeTypeDeclaration(staticClass.InterfaceName);
 
@@ -70,11 +70,33 @@ namespace GrassTemplate
             }
             targetInterface.IsInterface = true;
 
+            targetInterface.CustomAttributes.Add(new CodeAttributeDeclaration("GeneratedCode", new CodeAttributeArgument(  new CodePrimitiveExpression(Assembly.GetAssembly(typeof(Grass)).GetName().Version.ToString())),  new CodeAttributeArgument(  new CodePrimitiveExpression("ArtisanCode.Grass"))));
+
+            EmitInterfaceMethods(ref targetInterface, staticClass, minimumVisibility);
+
             emittedNamespace.Types.Add(targetInterface);
 
             targetUnit.Namespaces.Add(emittedNamespace);
 
             return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
+        }
+
+        private static void EmitInterfaceMethods(ref CodeTypeDeclaration targetInterface, ClassDefinition staticClass, Visibility minimumVisibility)
+        {
+            foreach (var m in staticClass.Methods.Where(x=>x.Accessability >= minimumVisibility).OrderBy(x=>x.Name))
+            {
+                CodeMemberMethod method = new CodeMemberMethod();
+
+                method.Name = m.Name;
+                method.ReturnType = new CodeTypeReference(m.Info.ReturnType);
+
+                foreach(var p in m.Parameters)
+                {
+                    method.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(p.Info.ParameterType), p.Name));
+                }
+
+                targetInterface.Members.Add(method);
+            }
         }
 
         public static string Static(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)

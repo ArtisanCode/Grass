@@ -20,7 +20,7 @@ namespace GrassTemplate.Internals
 
         public List<ParameterSignature> Parameters { get; set; }
 
-        public MethodInfo BaseInfo { get; set; }
+        public MethodInfo Info { get; set; }
 
         public HashSet<string> RequiredNamespaces
         {
@@ -36,7 +36,7 @@ namespace GrassTemplate.Internals
 
         public MethodSignature(MethodInfo info, bool IsVirtual = true): this()
         {
-            BaseInfo = info;
+            Info = info;
             Accessability = GetMethodVisibility(info);
             ReturnType = TypeHelper.DetermineType(info.ReturnType, ref _requiredNamespaces);
             Name = info.Name;
