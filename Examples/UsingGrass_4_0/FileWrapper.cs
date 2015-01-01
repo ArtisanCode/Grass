@@ -26,282 +26,282 @@ namespace ArtisanCode.UsingGrass
         
         public virtual void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents)
         {
-            System.IO.File.AppendAllLines(path, contents);
+            File.AppendAllLines(path, contents);
         }
         
         public virtual void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding)
         {
-            System.IO.File.AppendAllLines(path, contents, encoding);
+            File.AppendAllLines(path, contents, encoding);
         }
         
         public virtual void AppendAllText(string path, string contents)
         {
-            System.IO.File.AppendAllText(path, contents);
+            File.AppendAllText(path, contents);
         }
         
         public virtual void AppendAllText(string path, string contents, System.Text.Encoding encoding)
         {
-            System.IO.File.AppendAllText(path, contents, encoding);
+            File.AppendAllText(path, contents, encoding);
         }
         
         public virtual System.IO.StreamWriter AppendText(string path)
         {
-            return System.IO.File.AppendText(path);
+            return File.AppendText(path);
         }
         
         public virtual void Copy(string sourceFileName, string destFileName)
         {
-            System.IO.File.Copy(sourceFileName, destFileName);
+            File.Copy(sourceFileName, destFileName);
         }
         
         public virtual void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
-            System.IO.File.Copy(sourceFileName, destFileName, overwrite);
+            File.Copy(sourceFileName, destFileName, overwrite);
         }
         
         public virtual System.IO.FileStream Create(string path)
         {
-            return System.IO.File.Create(path);
+            return File.Create(path);
         }
         
         public virtual System.IO.FileStream Create(string path, int bufferSize)
         {
-            return System.IO.File.Create(path, bufferSize);
+            return File.Create(path, bufferSize);
         }
         
         public virtual System.IO.FileStream Create(string path, int bufferSize, System.IO.FileOptions options)
         {
-            return System.IO.File.Create(path, bufferSize, options);
+            return File.Create(path, bufferSize, options);
         }
         
         public virtual System.IO.FileStream Create(string path, int bufferSize, System.IO.FileOptions options, System.Security.AccessControl.FileSecurity fileSecurity)
         {
-            return System.IO.File.Create(path, bufferSize, options, fileSecurity);
+            return File.Create(path, bufferSize, options, fileSecurity);
         }
         
         public virtual System.IO.StreamWriter CreateText(string path)
         {
-            return System.IO.File.CreateText(path);
+            return File.CreateText(path);
         }
         
         public virtual void Decrypt(string path)
         {
-            System.IO.File.Decrypt(path);
+            File.Decrypt(path);
         }
         
         public virtual void Delete(string path)
         {
-            System.IO.File.Delete(path);
+            File.Delete(path);
         }
         
         public virtual void Encrypt(string path)
         {
-            System.IO.File.Encrypt(path);
+            File.Encrypt(path);
         }
         
         public virtual bool Exists(string path)
         {
-            return System.IO.File.Exists(path);
+            return File.Exists(path);
         }
         
         public virtual System.Security.AccessControl.FileSecurity GetAccessControl(string path)
         {
-            return System.IO.File.GetAccessControl(path);
+            return File.GetAccessControl(path);
         }
         
         public virtual System.Security.AccessControl.FileSecurity GetAccessControl(string path, System.Security.AccessControl.AccessControlSections includeSections)
         {
-            return System.IO.File.GetAccessControl(path, includeSections);
+            return File.GetAccessControl(path, includeSections);
         }
         
         public virtual System.IO.FileAttributes GetAttributes(string path)
         {
-            return System.IO.File.GetAttributes(path);
+            return File.GetAttributes(path);
         }
         
         public virtual System.DateTime GetCreationTime(string path)
         {
-            return System.IO.File.GetCreationTime(path);
+            return File.GetCreationTime(path);
         }
         
         public virtual System.DateTime GetCreationTimeUtc(string path)
         {
-            return System.IO.File.GetCreationTimeUtc(path);
+            return File.GetCreationTimeUtc(path);
         }
         
         public virtual System.DateTime GetLastAccessTime(string path)
         {
-            return System.IO.File.GetLastAccessTime(path);
+            return File.GetLastAccessTime(path);
         }
         
         public virtual System.DateTime GetLastAccessTimeUtc(string path)
         {
-            return System.IO.File.GetLastAccessTimeUtc(path);
+            return File.GetLastAccessTimeUtc(path);
         }
         
         public virtual System.DateTime GetLastWriteTime(string path)
         {
-            return System.IO.File.GetLastWriteTime(path);
+            return File.GetLastWriteTime(path);
         }
         
         public virtual System.DateTime GetLastWriteTimeUtc(string path)
         {
-            return System.IO.File.GetLastWriteTimeUtc(path);
+            return File.GetLastWriteTimeUtc(path);
         }
         
         public virtual void Move(string sourceFileName, string destFileName)
         {
-            System.IO.File.Move(sourceFileName, destFileName);
+            File.Move(sourceFileName, destFileName);
         }
         
         public virtual System.IO.FileStream Open(string path, System.IO.FileMode mode)
         {
-            return System.IO.File.Open(path, mode);
+            return File.Open(path, mode);
         }
         
         public virtual System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access)
         {
-            return System.IO.File.Open(path, mode, access);
+            return File.Open(path, mode, access);
         }
         
         public virtual System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share)
         {
-            return System.IO.File.Open(path, mode, access, share);
+            return File.Open(path, mode, access, share);
         }
         
         public virtual System.IO.FileStream OpenRead(string path)
         {
-            return System.IO.File.OpenRead(path);
+            return File.OpenRead(path);
         }
         
         public virtual System.IO.StreamReader OpenText(string path)
         {
-            return System.IO.File.OpenText(path);
+            return File.OpenText(path);
         }
         
         public virtual System.IO.FileStream OpenWrite(string path)
         {
-            return System.IO.File.OpenWrite(path);
+            return File.OpenWrite(path);
         }
         
         public virtual byte[] ReadAllBytes(string path)
         {
-            return System.IO.File.ReadAllBytes(path);
+            return File.ReadAllBytes(path);
         }
         
         public virtual string[] ReadAllLines(string path)
         {
-            return System.IO.File.ReadAllLines(path);
+            return File.ReadAllLines(path);
         }
         
         public virtual string[] ReadAllLines(string path, System.Text.Encoding encoding)
         {
-            return System.IO.File.ReadAllLines(path, encoding);
+            return File.ReadAllLines(path, encoding);
         }
         
         public virtual string ReadAllText(string path)
         {
-            return System.IO.File.ReadAllText(path);
+            return File.ReadAllText(path);
         }
         
         public virtual string ReadAllText(string path, System.Text.Encoding encoding)
         {
-            return System.IO.File.ReadAllText(path, encoding);
+            return File.ReadAllText(path, encoding);
         }
         
         public virtual System.Collections.Generic.IEnumerable<string> ReadLines(string path)
         {
-            return System.IO.File.ReadLines(path);
+            return File.ReadLines(path);
         }
         
         public virtual System.Collections.Generic.IEnumerable<string> ReadLines(string path, System.Text.Encoding encoding)
         {
-            return System.IO.File.ReadLines(path, encoding);
+            return File.ReadLines(path, encoding);
         }
         
         public virtual void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName)
         {
-            System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName);
+            File.Replace(sourceFileName, destinationFileName, destinationBackupFileName);
         }
         
         public virtual void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors)
         {
-            System.IO.File.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
+            File.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors);
         }
         
         public virtual void SetAccessControl(string path, System.Security.AccessControl.FileSecurity fileSecurity)
         {
-            System.IO.File.SetAccessControl(path, fileSecurity);
+            File.SetAccessControl(path, fileSecurity);
         }
         
         public virtual void SetAttributes(string path, System.IO.FileAttributes fileAttributes)
         {
-            System.IO.File.SetAttributes(path, fileAttributes);
+            File.SetAttributes(path, fileAttributes);
         }
         
         public virtual void SetCreationTime(string path, System.DateTime creationTime)
         {
-            System.IO.File.SetCreationTime(path, creationTime);
+            File.SetCreationTime(path, creationTime);
         }
         
         public virtual void SetCreationTimeUtc(string path, System.DateTime creationTimeUtc)
         {
-            System.IO.File.SetCreationTimeUtc(path, creationTimeUtc);
+            File.SetCreationTimeUtc(path, creationTimeUtc);
         }
         
         public virtual void SetLastAccessTime(string path, System.DateTime lastAccessTime)
         {
-            System.IO.File.SetLastAccessTime(path, lastAccessTime);
+            File.SetLastAccessTime(path, lastAccessTime);
         }
         
         public virtual void SetLastAccessTimeUtc(string path, System.DateTime lastAccessTimeUtc)
         {
-            System.IO.File.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
+            File.SetLastAccessTimeUtc(path, lastAccessTimeUtc);
         }
         
         public virtual void SetLastWriteTime(string path, System.DateTime lastWriteTime)
         {
-            System.IO.File.SetLastWriteTime(path, lastWriteTime);
+            File.SetLastWriteTime(path, lastWriteTime);
         }
         
         public virtual void SetLastWriteTimeUtc(string path, System.DateTime lastWriteTimeUtc)
         {
-            System.IO.File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
+            File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
         }
         
         public virtual void WriteAllBytes(string path, byte[] bytes)
         {
-            System.IO.File.WriteAllBytes(path, bytes);
+            File.WriteAllBytes(path, bytes);
         }
         
         public virtual void WriteAllLines(string path, string[] contents)
         {
-            System.IO.File.WriteAllLines(path, contents);
+            File.WriteAllLines(path, contents);
         }
         
         public virtual void WriteAllLines(string path, string[] contents, System.Text.Encoding encoding)
         {
-            System.IO.File.WriteAllLines(path, contents, encoding);
+            File.WriteAllLines(path, contents, encoding);
         }
         
         public virtual void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents)
         {
-            System.IO.File.WriteAllLines(path, contents);
+            File.WriteAllLines(path, contents);
         }
         
         public virtual void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding)
         {
-            System.IO.File.WriteAllLines(path, contents, encoding);
+            File.WriteAllLines(path, contents, encoding);
         }
         
         public virtual void WriteAllText(string path, string contents)
         {
-            System.IO.File.WriteAllText(path, contents);
+            File.WriteAllText(path, contents);
         }
         
         public virtual void WriteAllText(string path, string contents, System.Text.Encoding encoding)
         {
-            System.IO.File.WriteAllText(path, contents, encoding);
+            File.WriteAllText(path, contents, encoding);
         }
     }
 }

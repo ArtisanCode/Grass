@@ -10,6 +10,7 @@
 
 namespace ArtisanCode.UsingGrass
 {
+    using ArtisanCode.UsingGrass;
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace ArtisanCode.UsingGrass
     public interface ITestStaticClass
     {
         
-        bool ReturnBoolListOfBools(System.Collections.Generic.List<bool> input);
+        bool ReturnBoolListOfBools(System.Collections.Generic.IList<bool> input);
         
         bool ReturnBoolNoParameters();
         

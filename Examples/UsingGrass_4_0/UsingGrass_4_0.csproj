@@ -40,20 +40,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectoryWrapper.cs">
+      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
+    </Compile>
     <Compile Include="FileWrapper.cs">
-      <DependentUpon>File.tt</DependentUpon>
+      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IDirectory.cs">
+      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
     </Compile>
     <Compile Include="IFile.cs">
-      <DependentUpon>File.tt</DependentUpon>
+      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
     </Compile>
     <Compile Include="ITestStaticClass.cs">
       <DependentUpon>TestStaticClassWrapper.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubNamespace\IPath.cs">
+      <DependentUpon>SubNamespaced-System.Io.References.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubNamespace\PathWrapper.cs">
+      <DependentUpon>SubNamespaced-System.Io.References.tt</DependentUpon>
+    </Compile>
     <Compile Include="TestStaticClass.cs" />
+    <Compile Include="TestStaticClassWrapper.cs">
+      <DependentUpon>TestStaticClassWrapper.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="File.tt">
+    <None Include="Static-System.Io.References.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Include="SubNamespace\SubNamespaced-System.Io.References.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Include="TestStaticClassWrapper.tt">
@@ -69,6 +87,7 @@
       <Name>GrassTemplate</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

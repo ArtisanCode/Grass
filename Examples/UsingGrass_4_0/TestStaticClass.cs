@@ -13,7 +13,7 @@ namespace ArtisanCode.UsingGrass
             return true;
         }
 
-        public static bool ReturnBoolListOfBools(List<bool> input)
+        public static bool ReturnBoolListOfBools(IList<bool> input)
         {
             return true;
         }

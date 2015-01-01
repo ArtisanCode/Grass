@@ -99,12 +99,12 @@ namespace GrassTemplate.Internals
             {
                 CodeMemberMethod method = EmitFunctionSignature(m);
                 method.Attributes = MemberAttributes.Public;
-                method.ImplementationTypes.Add(new CodeTypeReference(staticClass.InterfaceName));
+                method.ImplementationTypes.Add(new CodeTypeReference(staticClass.AsType));
 
                 CodeExpression[] methodParameters = m.Parameters.Select(x => new CodeSnippetExpression(x.Name)).ToArray();
 
                 var callStaticMethodExpr = new CodeMethodInvokeExpression(
-                        new CodeTypeReferenceExpression(staticClass.QualifiedAssemblyName), m.Name, methodParameters);
+                        new CodeTypeReferenceExpression(staticClass.ClassName), m.Name, methodParameters);
 
                 if (m.ReturnType != "void")
                 {

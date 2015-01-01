@@ -14,6 +14,8 @@ namespace GrassTemplate.Internals
 
         public string QualifiedAssemblyName { get; set; }
 
+        public Type AsType { get { return Type.GetType(QualifiedAssemblyName); } }
+
         public Visibility MinimumVisibility { get; set; }
 
         public List<MethodSignature> Methods { get; set; }
@@ -24,11 +26,13 @@ namespace GrassTemplate.Internals
 
         public ClassDefinition(string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool isPartial = true)
         {
-            RequiredNamespaces = new HashSet<string>();
             QualifiedAssemblyName = qualifiedAssemblyName;
             MinimumVisibility = minimumVisibility;
             IsPartial = isPartial;
             GenerateNames();
+
+            RequiredNamespaces = new HashSet<string>();
+            RequiredNamespaces.Add(AsType.Namespace);
         }
 
         public string GetClassSignature(string accessability = "public")
@@ -40,6 +44,7 @@ namespace GrassTemplate.Internals
         {
             return string.Format("{0} interface {1}", accessability, InterfaceName);
         }
+
 
         public void GenerateNames()
         {

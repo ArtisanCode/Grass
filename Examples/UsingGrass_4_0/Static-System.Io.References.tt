@@ -3,4 +3,5 @@
 <#@ output extension="/" #>
 <#@ import namespace="GrassTemplate" #>
 
-<# Grass.Static(this.Host, "ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass"); #>
+<# Grass.Static(this.Host, "System.IO.File"); #>
+<# Grass.Static(this.Host, "System.IO.Directory"); #>
