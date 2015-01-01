@@ -1,6 +1,6 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="false" hostspecific="true" #>
 <#@ assembly name="$(TargetDir)ArtisanCode.Grass.dll" #>
+<#@ output extension="/" #>
 <#@ import namespace="GrassTemplate" #>
-<#@ output extension=".cs" #>
 
-<#= Grass.Static("ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass", Visibility.Internal) #>
+<# Grass.StaticCodeGen(this.Host, "ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass"); #>

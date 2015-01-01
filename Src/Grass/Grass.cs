@@ -25,16 +25,20 @@ namespace GrassTemplate
             var staticClass = new ClassDefinition(qualifiedAssemblyName, minimumVisibility, partial);
             staticClass.PopulateStaticMethods();
 
-            var engine = new CodeGen();
+            ICodeGen engine = new CodeGen();
 
             var emittedInterface = engine.EmitInterface(ns, staticClass, minimumVisibility);
+            var emittedStaticWrapper = engine.EmitStaticWrapperClass(ns, staticClass, minimumVisibility);
 
             string templateDirectory = Path.GetDirectoryName(host.TemplateFile);
-            string outputFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
+            string interfaceFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
+            string classWrapperFilePath = Path.Combine(templateDirectory, emittedStaticWrapper.Item1);
 
-            WriteCodefileToDisk(emittedInterface.Item2, outputFilePath);
+            WriteCodefileToDisk(emittedInterface.Item2, interfaceFilePath);
+            WriteCodefileToDisk(emittedStaticWrapper.Item2, classWrapperFilePath);
 
-            AddFileToTemplate(host, outputFilePath);
+            AddFileToTemplate(host, interfaceFilePath);
+            AddFileToTemplate(host, classWrapperFilePath);
         }
 
         private static void WriteCodefileToDisk(CodeCompileUnit emittedInterface, string outputFilePath)
