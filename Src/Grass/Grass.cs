@@ -34,8 +34,6 @@ namespace GrassTemplate
             string interfaceFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
             string classWrapperFilePath = Path.Combine(templateDirectory, emittedStaticWrapper.Item1);
 
-            //ClearGeneratedFilesFromTemplate(host, interfaceFilePath);
-            //ClearGeneratedFilesFromTemplate(host, classWrapperFilePath);
 
             WriteCodefileToDisk(emittedInterface.Item2, interfaceFilePath);
             WriteCodefileToDisk(emittedStaticWrapper.Item2, classWrapperFilePath);
@@ -56,14 +54,12 @@ namespace GrassTemplate
             }
         }
 
-        private static void ClearGeneratedFilesFromTemplate(ITextTemplatingEngineHost host, string outputFilePath)
+        public static void Clean(ITextTemplatingEngineHost host)
         {
-            IServiceProvider hostServiceProvider = (IServiceProvider)host;
-            DTE dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
             var projectItem = LocateTemplateFile(host);
-            foreach (var i in projectItem.ProjectItems)
+            foreach (ProjectItem i in projectItem.ProjectItems)
             {
-                //dte.Solution.FindProjectItem(i).Delete();
+                i.Remove();
             }            
         }
 
