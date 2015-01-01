@@ -21,14 +21,16 @@ namespace ArtisanCode.UsingGrass
     public interface ITestStaticClass
     {
         
-        bool ReturnBoolListOfBools(System.Collections.Generic.IList<bool> input);
+        void OutParameters(out Encoding encoding);
+        
+        void RefParameters(ref Encoding encoding);
+        
+        bool ReturnBoolListOfBools(IList<Boolean> input);
         
         bool ReturnBoolNoParameters();
         
         System.Collections.Generic.Dictionary<int, System.Collections.Generic.IList<bool>> ReturnDictionary();
         
-        void UnusualParameters(System.Text.Encoding encoding);
-        
-        object UsingDynamics(object input);
+        object UsingDynamics(Object input);
     }
 }

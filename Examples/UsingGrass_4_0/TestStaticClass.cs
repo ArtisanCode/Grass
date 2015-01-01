@@ -32,9 +32,13 @@ namespace ArtisanCode.UsingGrass
         {
             return "This is crazy!";
         }
-        public static void UnusualParameters(Encoding encoding)
+        public static void RefParameters(ref Encoding encoding)
         {
             return;
+        }
+        public static void OutParameters(out Encoding encoding)
+        {
+            encoding = Encoding.UTF8;
         }
     }
 }

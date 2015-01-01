@@ -29,7 +29,7 @@ namespace GrassTemplate.Internals
                 return "void";
             }
 
-            return t.Name;
+            return t.Name.Replace("&",""); // Fix ref type issues
         }
     }
 }

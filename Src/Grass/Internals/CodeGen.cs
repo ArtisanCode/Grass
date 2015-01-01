@@ -90,7 +90,24 @@ namespace GrassTemplate.Internals
 
             foreach (var p in m.Parameters)
             {
-                var parameterSignature = new CodeParameterDeclarationExpression(new CodeTypeReference(p.Info.ParameterType), p.Name);
+                var parameterSignature = new CodeParameterDeclarationExpression(p.Type, p.Name);
+
+                if (p.Info.ParameterType.IsByRef && p.Info.IsOut)
+                {
+                    parameterSignature.Direction = FieldDirection.Out;
+                }
+                else if (p.Info.ParameterType.IsByRef)
+                {
+                    parameterSignature.Direction = FieldDirection.Ref;
+                }
+                else if(p.Info.IsIn)
+                {
+                    parameterSignature.Direction = FieldDirection.In;
+                }
+                else if(p.Info.IsOut)
+                {
+                    parameterSignature.Direction = FieldDirection.Out;
+                }
 
                 method.Parameters.Add(parameterSignature);
             }
@@ -107,7 +124,7 @@ namespace GrassTemplate.Internals
                 method.Attributes = MemberAttributes.Public;
                 method.ImplementationTypes.Add(new CodeTypeReference(staticClass.AsType));
 
-                CodeExpression[] methodParameters = m.Parameters.Select(x => new CodeSnippetExpression(x.Name)).ToArray();
+                CodeExpression[] methodParameters = m.Parameters.Select(x => GenParameterExpression(x)).ToArray();
 
                 var callStaticMethodExpr = new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(staticClass.ClassName), m.Name, methodParameters);
@@ -123,6 +140,28 @@ namespace GrassTemplate.Internals
        
                 targetStaticClass.Members.Add(method);
             }
+        }
+
+        private static CodeExpression GenParameterExpression(ParameterSignature p)
+        {
+            FieldDirection direction = FieldDirection.In;
+            var paramSnippet = new CodeSnippetExpression(p.Name);
+            
+            if (p.Info.IsOut || p.Info.ParameterType.IsByRef && p.Info.IsOut)
+            {
+                direction = FieldDirection.Out;
+            }
+            else if (p.Info.ParameterType.IsByRef)
+            {
+                direction = FieldDirection.Ref;
+            }
+
+            if(direction != FieldDirection.In)
+            {
+                return new CodeDirectionExpression(direction, paramSnippet); 
+            }
+
+            return paramSnippet;
         }
 
         public CodeNamespace GenerateEmittedNamespace(string targetNamespace, ClassDefinition staticClass)

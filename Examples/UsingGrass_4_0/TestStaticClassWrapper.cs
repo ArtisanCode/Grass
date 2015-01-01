@@ -21,7 +21,17 @@ namespace ArtisanCode.UsingGrass
     public partial class TestStaticClassWrapper : ITestStaticClass
     {
         
-        public virtual bool ReturnBoolListOfBools(System.Collections.Generic.IList<bool> input)
+        public virtual void OutParameters(out Encoding encoding)
+        {
+            TestStaticClass.OutParameters(out encoding);
+        }
+        
+        public virtual void RefParameters(ref Encoding encoding)
+        {
+            TestStaticClass.RefParameters(ref encoding);
+        }
+        
+        public virtual bool ReturnBoolListOfBools(IList<Boolean> input)
         {
             return TestStaticClass.ReturnBoolListOfBools(input);
         }
@@ -36,12 +46,7 @@ namespace ArtisanCode.UsingGrass
             return TestStaticClass.ReturnDictionary();
         }
         
-        public virtual void UnusualParameters(System.Text.Encoding encoding)
-        {
-            TestStaticClass.UnusualParameters(encoding);
-        }
-        
-        public virtual object UsingDynamics(object input)
+        public virtual object UsingDynamics(Object input)
         {
             return TestStaticClass.UsingDynamics(input);
         }
