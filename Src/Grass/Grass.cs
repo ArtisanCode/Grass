@@ -25,7 +25,7 @@ namespace GrassTemplate
             var staticClass = new ClassDefinition(qualifiedAssemblyName, minimumVisibility, partial);
             staticClass.PopulateStaticMethods();
 
-            ICodeGen engine = new CodeGen();
+            ICodeGen engine = CreateCodeGenEngine(host);
 
             var emittedInterface = engine.EmitInterface(ns, staticClass, minimumVisibility);
             var emittedStaticWrapper = engine.EmitStaticWrapperClass(ns, staticClass, minimumVisibility);
@@ -35,16 +35,29 @@ namespace GrassTemplate
             string classWrapperFilePath = Path.Combine(templateDirectory, emittedStaticWrapper.Item1);
 
 
-            WriteCodefileToDisk(emittedInterface.Item2, interfaceFilePath);
-            WriteCodefileToDisk(emittedStaticWrapper.Item2, classWrapperFilePath);
+            WriteCodefileToDisk(engine, emittedInterface.Item2, interfaceFilePath);
+            WriteCodefileToDisk(engine, emittedStaticWrapper.Item2, classWrapperFilePath);
 
             AddFileToTemplate(host, interfaceFilePath);
             AddFileToTemplate(host, classWrapperFilePath);
         }
 
-        private static void WriteCodefileToDisk(CodeCompileUnit emittedInterface, string outputFilePath)
+        private static ICodeGen CreateCodeGenEngine(ITextTemplatingEngineHost host)
         {
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            var projectItem = LocateTemplateFile(host);
+
+            if (projectItem.ContainingProject.FullName.Contains("vbproj"))
+            {
+                return new VBCodeGen();
+            }
+
+            return new CSCodeGen();
+
+        }
+
+        private static void WriteCodefileToDisk(ICodeGen engine, CodeCompileUnit emittedInterface, string outputFilePath)
+        {
+            CodeDomProvider provider = engine.CreateCodeDomProvider();
             CodeGeneratorOptions options = new CodeGeneratorOptions();
             options.BracingStyle = "C";
             using (StreamWriter sourceWriter = new StreamWriter(outputFilePath))
@@ -60,7 +73,7 @@ namespace GrassTemplate
             foreach (ProjectItem i in projectItem.ProjectItems)
             {
                 i.Remove();
-            }            
+            }
         }
 
         private static void AddFileToTemplate(ITextTemplatingEngineHost host, string outputFilePath)

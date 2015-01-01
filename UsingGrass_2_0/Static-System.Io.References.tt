@@ -1,0 +1,8 @@
+﻿<#@ template debug="false" hostspecific="true" #>
+<#@ assembly name="$(TargetDir)ArtisanCode.Grass.dll" #>
+<#@ output extension="/" #>
+<#@ import namespace="GrassTemplate" #>
+
+<# Grass.Clean(this.Host); #>
+<# Grass.Static(this.Host, "System.IO.File"); #>
+<# Grass.Static(this.Host, "System.IO.Directory"); #>

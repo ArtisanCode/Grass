@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,15 +8,18 @@ using System.Text;
 
 namespace GrassTemplate.Internals
 {
-    public class CodeGen : GrassTemplate.Internals.ICodeGen
+    public abstract class CodeGen : GrassTemplate.Internals.ICodeGen
     {
+        public abstract string FileExtension { get; }
+
+        public abstract CodeDomProvider CreateCodeDomProvider();
 
         public Tuple<string, CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, Visibility minimumVisibility)
         {
             CodeCompileUnit targetUnit = new CodeCompileUnit();
             CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
 
-            string outputFileName = string.Format("{0}.cs", staticClass.InterfaceName);
+            string outputFileName = string.Format("{0}.{1}", staticClass.InterfaceName, FileExtension);
             CodeTypeDeclaration targetInterface = GenerateCodeType(staticClass.InterfaceName, minimumVisibility);
 
             targetInterface.IsInterface = true;
@@ -34,7 +38,7 @@ namespace GrassTemplate.Internals
             CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
 
             string className = string.Format("{0}Wrapper", staticClass.ClassName);
-            string outputFileName = string.Format("{0}.cs", className);
+            string outputFileName = string.Format("{0}.{1}", className, FileExtension);
             CodeTypeDeclaration targetStaticWrapper = GenerateCodeType(className, minimumVisibility);
             targetStaticWrapper.IsClass = true;
             targetStaticWrapper.IsPartial = true;
@@ -86,7 +90,9 @@ namespace GrassTemplate.Internals
 
             foreach (var p in m.Parameters)
             {
-                method.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(p.Info.ParameterType), p.Name));
+                var parameterSignature = new CodeParameterDeclarationExpression(new CodeTypeReference(p.Info.ParameterType), p.Name);
+
+                method.Parameters.Add(parameterSignature);
             }
 
             return method;
