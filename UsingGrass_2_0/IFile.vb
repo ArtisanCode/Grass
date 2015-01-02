@@ -130,7 +130,7 @@ Public Interface IFile
     
     Sub WriteAllLines(ByVal path As String, ByVal contents As System.Collections.Generic.IEnumerable(Of String))
     
-    Sub WriteAllLines(ByVal path As String, contents As System.Collections.Generic.IEnumerable(Of String), encoding As System.Text.Encoding)
+    Sub WriteAllLines(ByVal path As String, ByVal contents As System.Collections.Generic.IEnumerable(Of String), ByVal encoding As System.Text.Encoding)
     
     Sub WriteAllText(ByVal path As String, ByVal contents As String)
     

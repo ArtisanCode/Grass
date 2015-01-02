@@ -75,7 +75,7 @@ namespace GrassTemplate.Internals
         {
             foreach (var m in staticClass.Methods.Where(x => x.Accessability >= minimumVisibility).OrderBy(x => x.Name))
             {
-                CodeMemberMethod method = EmitFunctionSignature(m);
+                var method = EmitFunctionSignature(m);
 
                 targetInterface.Members.Add(method);
             }
@@ -83,14 +83,20 @@ namespace GrassTemplate.Internals
 
         private static CodeMemberMethod EmitFunctionSignature(MethodSignature m)
         {
-            CodeMemberMethod method = new CodeMemberMethod();
-
-            method.Name = m.Name;
-            method.ReturnType = new CodeTypeReference(m.Info.ReturnType);
+            var method = new CodeMemberMethod
+            {
+                Name = m.Name,
+                ReturnType = new CodeTypeReference(m.Info.ReturnType)
+            };
 
             foreach (var p in m.Parameters)
             {
-                var parameterSignature = new CodeParameterDeclarationExpression(p.Type, p.Name);
+                var parameterType = p.AsType;
+                if (parameterType.IsByRef)
+                {
+                    parameterType = p.AsType.GetElementType();
+                }
+                var parameterSignature = new CodeParameterDeclarationExpression(parameterType, p.Name);
 
                 if (p.Info.ParameterType.IsByRef && p.Info.IsOut)
                 {

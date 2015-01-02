@@ -13,6 +13,8 @@ namespace GrassTemplate.Internals
 
         public string Name { get; set; }
 
+        public Type AsType { get { return Info.ParameterType; } }
+
         public ParameterInfo Info { get; set; }
 
         public HashSet<string> RequiredNamespaces {
