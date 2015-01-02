@@ -110,7 +110,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Src\Grass\GrassTemplate.csproj">
+    <ProjectReference Include="..\..\Src\Grass\GrassTemplate.csproj">
       <Project>{63ad8324-c978-41a6-9294-8bce6bb8c967}</Project>
       <Name>GrassTemplate</Name>
     </ProjectReference>

@@ -23,14 +23,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Grass", "Tests\Test.Gr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsingGrass_4_0", "Examples\UsingGrass_4_0\UsingGrass_4_0.csproj", "{4FBF238C-3B44-48FC-92E0-8AC9F24B5AB0}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UsingGrass_2_0", "UsingGrass_2_0\UsingGrass_2_0.vbproj", "{E636359D-44FA-4E6D-8503-83C5EFF963CA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1356589B-4210-49DE-9254-9769B5A2D522}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UsingGrass_2_0", "Examples\UsingGrass_2_0\UsingGrass_2_0.vbproj", "{E636359D-44FA-4E6D-8503-83C5EFF963CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
