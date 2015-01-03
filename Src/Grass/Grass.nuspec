@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Grass</id>
+    <version>$version$</version>
+    <title>Generated abstractions for Statics and Singletons</title>
+    <authors>Tom Kuhn</authors>
+    <owners>Artisan Code</owners>
+    <iconUrl>https://avatars3.githubusercontent.com/u/7647107</iconUrl>
+    <licenseUrl>https://github.com/ArtisanCode/Grass/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ArtisanCode/Grass</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Generates test friendly wrappers around Static and Singleton classes</summary>
+    <description>The Grass library will automatically generate you wrappers around Static and Singleton classes. It creates an interface which describes the static methods of the class being wrapped and then creates a wrapper that implements the interface to call the static functions. This allows you to use the interface within your code and start mocking out any static methods to aid unit testing. The library will generate both C# and VB.Net code depending on the project type.</description>
+    <releaseNotes>Initial version - Static classes supported only</releaseNotes>
+    <tags>Refactor Abstraction Static Singleton</tags>
+  </metadata>
+</package>
