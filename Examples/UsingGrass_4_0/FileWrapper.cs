@@ -21,7 +21,7 @@ namespace ArtisanCode.UsingGrass
     
     
     [GeneratedCode("0.0.0.1", "ArtisanCode.Grass")]
-    public partial class FileWrapper : IFile
+    public partial class FileWrapper : object, IFile
     {
         
         public virtual void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents)

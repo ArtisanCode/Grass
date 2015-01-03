@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="FileWrapper.cs">
       <DependentUpon>Static-System.Io.References.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDirectory.cs">
       <DependentUpon>Static-System.Io.References.tt</DependentUpon>
@@ -53,6 +54,7 @@
     </Compile>
     <Compile Include="IFile.cs">
       <DependentUpon>Static-System.Io.References.tt</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITestStaticClass.cs">
       <DependentUpon>TestStaticClassWrapper.tt</DependentUpon>

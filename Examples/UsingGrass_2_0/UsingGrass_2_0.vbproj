@@ -62,6 +62,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectoryWrapper.vb">
+      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FileWrapper.vb">
+      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
+    </Compile>
     <Compile Include="IDirectory.vb">
       <DependentUpon>Static-System.Io.References.tt</DependentUpon>
     </Compile>

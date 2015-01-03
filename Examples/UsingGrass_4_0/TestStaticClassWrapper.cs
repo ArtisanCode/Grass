@@ -18,7 +18,7 @@ namespace ArtisanCode.UsingGrass
     
     
     [GeneratedCode("0.0.0.1", "ArtisanCode.Grass")]
-    public partial class TestStaticClassWrapper : ITestStaticClass
+    public partial class TestStaticClassWrapper : object, ITestStaticClass
     {
         
         public virtual void OutParameters(out System.Text.Encoding encoding)

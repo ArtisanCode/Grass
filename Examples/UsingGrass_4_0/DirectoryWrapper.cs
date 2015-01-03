@@ -19,7 +19,7 @@ namespace ArtisanCode.UsingGrass
     
     
     [GeneratedCode("0.0.0.1", "ArtisanCode.Grass")]
-    public partial class DirectoryWrapper : IDirectory
+    public partial class DirectoryWrapper : object, IDirectory
     {
         
         public virtual System.IO.DirectoryInfo CreateDirectory(string path)

@@ -22,7 +22,7 @@ namespace GrassTemplate
             var callContext = CallContext.LogicalGetData("NamespaceHint");
             var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
 
-            var staticClass = new ClassDefinition(qualifiedAssemblyName, minimumVisibility, partial);
+            var staticClass = new ClassDefinition(qualifiedAssemblyName, ns, minimumVisibility, partial);
             staticClass.PopulateStaticMethods();
 
             ICodeGen engine = CreateCodeGenEngine(host);

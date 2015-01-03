@@ -43,8 +43,12 @@ namespace GrassTemplate.Internals
             targetStaticWrapper.IsClass = true;
             targetStaticWrapper.IsPartial = true;
 
-            targetStaticWrapper.BaseTypes.Add(new CodeTypeReference(staticClass.InterfaceName));
+            var interfaceRef = new CodeTypeReference(new CodeTypeParameter(staticClass.InterfaceName));
 
+            // Inherit from Object (Required for the VB CodeDom to generate the Implements keyword)
+            targetStaticWrapper.BaseTypes.Add(new CodeTypeReference(typeof(System.Object)));
+            targetStaticWrapper.BaseTypes.Add(interfaceRef);
+            
             EmitStaticWrapperClassMethods(ref targetStaticWrapper, staticClass, minimumVisibility);
 
             emittedNamespace.Types.Add(targetStaticWrapper);
@@ -75,18 +79,18 @@ namespace GrassTemplate.Internals
         {
             foreach (var m in staticClass.Methods.Where(x => x.Accessability >= minimumVisibility).OrderBy(x => x.Name))
             {
-                var method = EmitFunctionSignature(m);
+                var method = EmitFunctionSignature(staticClass, m);
 
                 targetInterface.Members.Add(method);
             }
         }
 
-        private static CodeMemberMethod EmitFunctionSignature(MethodSignature m)
+        private static CodeMemberMethod EmitFunctionSignature(ClassDefinition staticClass, MethodSignature m)
         {
             var method = new CodeMemberMethod
             {
                 Name = m.Name,
-                ReturnType = new CodeTypeReference(m.Info.ReturnType)
+                ReturnType = new CodeTypeReference(m.Info.ReturnType)                
             };
 
             foreach (var p in m.Parameters)
@@ -126,9 +130,10 @@ namespace GrassTemplate.Internals
         {
             foreach (var m in staticClass.Methods.Where(x => x.Accessability >= minimumVisibility).OrderBy(x => x.Name))
             {
-                CodeMemberMethod method = EmitFunctionSignature(m);
+                CodeMemberMethod method = EmitFunctionSignature(staticClass, m);
                 method.Attributes = MemberAttributes.Public;
-                method.ImplementationTypes.Add(new CodeTypeReference(staticClass.AsType));
+                method.ImplementationTypes.Add(new CodeTypeReference(new CodeTypeParameter(staticClass.InterfaceName)));
+
 
                 CodeExpression[] methodParameters = m.Parameters.Select(x => GenParameterExpression(x)).ToArray();
 
