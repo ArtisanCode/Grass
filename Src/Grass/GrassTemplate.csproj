@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Grass.cs" />
+    <Compile Include="GrassOptions.cs" />
     <Compile Include="Internals\ClassDefinition.cs" />
     <Compile Include="Internals\CodeGen.cs" />
     <Compile Include="Internals\CSCodeGen.cs" />

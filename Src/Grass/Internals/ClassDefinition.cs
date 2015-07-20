@@ -26,12 +26,12 @@ namespace GrassTemplate.Internals
 
         public string Namespace { get; set; }
 
-        public ClassDefinition(string qualifiedAssemblyName, string targetNamespace, Visibility minimumVisibility = Visibility.Public, bool isPartial = true)
+        public ClassDefinition(string qualifiedAssemblyName, string targetNamespace, GrassOptions options)
         {
             QualifiedAssemblyName = qualifiedAssemblyName;
             Namespace = targetNamespace;
-            MinimumVisibility = minimumVisibility;
-            IsPartial = isPartial;
+            MinimumVisibility = options.MinimumVisibility;
+            IsPartial = options.GeneratePartialClass;
             GenerateNames();
 
             RequiredNamespaces = new HashSet<string>();

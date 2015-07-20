@@ -14,16 +14,16 @@ namespace GrassTemplate.Internals
 
         public abstract CodeDomProvider CreateCodeDomProvider();
 
-        public Tuple<string, CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, Visibility minimumVisibility)
+        public Tuple<string, CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, GrassOptions options)
         {
             CodeCompileUnit targetUnit = new CodeCompileUnit();
             CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
 
             string outputFileName = string.Format("{0}.{1}", staticClass.InterfaceName, FileExtension);
-            CodeTypeDeclaration targetInterface = GenerateCodeType(staticClass.InterfaceName, minimumVisibility);
+            CodeTypeDeclaration targetInterface = GenerateCodeType(staticClass.InterfaceName, options);
 
             targetInterface.IsInterface = true;
-            EmitInterfaceMethods(ref targetInterface, staticClass, minimumVisibility);
+            EmitInterfaceMethods(ref targetInterface, staticClass, options);
 
             emittedNamespace.Types.Add(targetInterface);
 
@@ -32,16 +32,16 @@ namespace GrassTemplate.Internals
             return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
         }
 
-        public Tuple<string, CodeCompileUnit> EmitStaticWrapperClass(string targetNamespace, ClassDefinition staticClass, Visibility minimumVisibility)
+        public Tuple<string, CodeCompileUnit> EmitStaticWrapperClass(string targetNamespace, ClassDefinition staticClass, GrassOptions options)
         {
             CodeCompileUnit targetUnit = new CodeCompileUnit();
             CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
 
             string className = string.Format("{0}Wrapper", staticClass.ClassName);
             string outputFileName = string.Format("{0}.{1}", className, FileExtension);
-            CodeTypeDeclaration targetStaticWrapper = GenerateCodeType(className, minimumVisibility);
+            CodeTypeDeclaration targetStaticWrapper = GenerateCodeType(className, options);
             targetStaticWrapper.IsClass = true;
-            targetStaticWrapper.IsPartial = true;
+            targetStaticWrapper.IsPartial = options.GeneratePartialClass;
 
             var interfaceRef = new CodeTypeReference(new CodeTypeParameter(staticClass.InterfaceName));
 
@@ -49,7 +49,7 @@ namespace GrassTemplate.Internals
             targetStaticWrapper.BaseTypes.Add(new CodeTypeReference(typeof(System.Object)));
             targetStaticWrapper.BaseTypes.Add(interfaceRef);
             
-            EmitStaticWrapperClassMethods(ref targetStaticWrapper, staticClass, minimumVisibility);
+            EmitStaticWrapperClassMethods(ref targetStaticWrapper, staticClass, options);
 
             emittedNamespace.Types.Add(targetStaticWrapper);
 
@@ -58,11 +58,11 @@ namespace GrassTemplate.Internals
             return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
         }
 
-        public CodeTypeDeclaration GenerateCodeType(string name, Visibility minimumVisibility)
+        public CodeTypeDeclaration GenerateCodeType(string name, GrassOptions options)
         {
             CodeTypeDeclaration targetInterface = new CodeTypeDeclaration(name);
 
-            if (minimumVisibility.HasFlag(Visibility.Public))
+            if (options.MinimumVisibility.HasFlag(Visibility.Public))
             {
                 targetInterface.TypeAttributes = TypeAttributes.Public;
             }
@@ -75,9 +75,9 @@ namespace GrassTemplate.Internals
             return targetInterface;
         }
 
-        public void EmitInterfaceMethods(ref CodeTypeDeclaration targetInterface, ClassDefinition staticClass, Visibility minimumVisibility)
+        public void EmitInterfaceMethods(ref CodeTypeDeclaration targetInterface, ClassDefinition staticClass, GrassOptions options)
         {
-            foreach (var m in staticClass.Methods.Where(x => x.Accessability >= minimumVisibility).OrderBy(x => x.Name))
+            foreach (var m in staticClass.Methods.Where(x => x.Accessability >= options.MinimumVisibility).OrderBy(x => x.Name))
             {
                 var method = EmitFunctionSignature(staticClass, m);
 
@@ -125,10 +125,10 @@ namespace GrassTemplate.Internals
             return method;
         }
 
-        
-        public void EmitStaticWrapperClassMethods(ref CodeTypeDeclaration targetStaticClass, ClassDefinition staticClass, Visibility minimumVisibility)
+
+        public void EmitStaticWrapperClassMethods(ref CodeTypeDeclaration targetStaticClass, ClassDefinition staticClass, GrassOptions options)
         {
-            foreach (var m in staticClass.Methods.Where(x => x.Accessability >= minimumVisibility).OrderBy(x => x.Name))
+            foreach (var m in staticClass.Methods.Where(x => x.Accessability >= options.MinimumVisibility).OrderBy(x => x.Name))
             {
                 CodeMemberMethod method = EmitFunctionSignature(staticClass, m);
                 method.Attributes = MemberAttributes.Public;

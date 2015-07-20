@@ -3,4 +3,8 @@
 <#@ output extension="/" #>
 <#@ import namespace="GrassTemplate" #>
 
-<# Grass.Static(this.Host, "ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass"); #>
+<# 
+var codeGenOptions = new GrassTemplate.GrassOptions() { UseDynamic = true };
+
+Grass.Static(this.Host, "ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass", codeGenOptions); 
+#>

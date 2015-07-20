@@ -17,18 +17,20 @@ namespace GrassTemplate
     {
         public static string GeneratedCodeTag { get { return String.Format("[GeneratedCode(\"{0}\",\"{1}\")]", "ArtisanCode.Grass", Assembly.GetAssembly(typeof(Grass)).GetName().Version); } }
 
-        public static void Static(ITextTemplatingEngineHost host, string qualifiedAssemblyName, Visibility minimumVisibility = Visibility.Public, bool partial = true)
+        public static void Static(ITextTemplatingEngineHost host, string qualifiedAssemblyName, GrassOptions codeGenOptions = null)
         {
+            var options = codeGenOptions ?? new GrassOptions();
+
             var callContext = CallContext.LogicalGetData("NamespaceHint");
             var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
 
-            var staticClass = new ClassDefinition(qualifiedAssemblyName, ns, minimumVisibility, partial);
+            var staticClass = new ClassDefinition(qualifiedAssemblyName, ns, options);
             staticClass.PopulateStaticMethods();
 
             ICodeGen engine = CreateCodeGenEngine(host);
 
-            var emittedInterface = engine.EmitInterface(ns, staticClass, minimumVisibility);
-            var emittedStaticWrapper = engine.EmitStaticWrapperClass(ns, staticClass, minimumVisibility);
+            var emittedInterface = engine.EmitInterface(ns, staticClass, options);
+            var emittedStaticWrapper = engine.EmitStaticWrapperClass(ns, staticClass, options);
 
             string templateDirectory = Path.GetDirectoryName(host.TemplateFile);
             string interfaceFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
