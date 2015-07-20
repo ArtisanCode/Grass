@@ -6,15 +6,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace GrassTemplate.Internals
+namespace GrassTemplate.Internals.Generation
 {
-    public abstract class CodeGen : GrassTemplate.Internals.ICodeGen
+    public abstract class CodeGen : ICodeGen
     {
         public abstract string FileExtension { get; }
 
         public abstract CodeDomProvider CreateCodeDomProvider();
 
-        public Tuple<string, CodeCompileUnit> EmitInterface(string targetNamespace, ClassDefinition staticClass, GrassOptions options)
+        public CodeGenerationResult EmitInterface(string targetNamespace, ClassDefinition staticClass, GrassOptions options)
         {
             CodeCompileUnit targetUnit = new CodeCompileUnit();
             CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
@@ -29,10 +29,10 @@ namespace GrassTemplate.Internals
 
             targetUnit.Namespaces.Add(emittedNamespace);
 
-            return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
+            return new CodeGenerationResult(outputFileName, targetUnit);
         }
 
-        public Tuple<string, CodeCompileUnit> EmitStaticWrapperClass(string targetNamespace, ClassDefinition staticClass, GrassOptions options)
+        public CodeGenerationResult EmitStaticWrapperClass(string targetNamespace, ClassDefinition staticClass, GrassOptions options)
         {
             CodeCompileUnit targetUnit = new CodeCompileUnit();
             CodeNamespace emittedNamespace = GenerateEmittedNamespace(targetNamespace, staticClass);
@@ -55,7 +55,7 @@ namespace GrassTemplate.Internals
 
             targetUnit.Namespaces.Add(emittedNamespace);
 
-            return new Tuple<string, CodeCompileUnit>(outputFileName, targetUnit);
+            return new CodeGenerationResult(outputFileName, targetUnit);
         }
 
         public CodeTypeDeclaration GenerateCodeType(string name, GrassOptions options)

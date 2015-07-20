@@ -48,14 +48,15 @@
     <Compile Include="Grass.cs" />
     <Compile Include="GrassOptions.cs" />
     <Compile Include="Internals\ClassDefinition.cs" />
-    <Compile Include="Internals\CodeGen.cs" />
-    <Compile Include="Internals\CSCodeGen.cs" />
+    <Compile Include="Internals\Generation\CodeGenerationResult.cs" />
+    <Compile Include="Internals\Generation\CodeGen.cs" />
+    <Compile Include="Internals\Generation\CSCodeGen.cs" />
     <Compile Include="Internals\EnumHelper.cs" />
-    <Compile Include="Internals\ICodeGen.cs" />
+    <Compile Include="Internals\Generation\ICodeGen.cs" />
     <Compile Include="Internals\MethodSignature.cs" />
     <Compile Include="Internals\ParameterSignature.cs" />
     <Compile Include="Internals\TypeHelper.cs" />
-    <Compile Include="Internals\VBCodeGen.cs" />
+    <Compile Include="Internals\Generation\VBCodeGen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visibility.cs" />
   </ItemGroup>

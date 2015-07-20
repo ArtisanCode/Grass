@@ -10,6 +10,7 @@ using System.CodeDom.Compiler;
 using System.IO;
 using Microsoft.VisualStudio.TextTemplating;
 using EnvDTE;
+using GrassTemplate.Internals.Generation;
 
 namespace GrassTemplate
 {
@@ -33,12 +34,12 @@ namespace GrassTemplate
             var emittedStaticWrapper = engine.EmitStaticWrapperClass(ns, staticClass, options);
 
             string templateDirectory = Path.GetDirectoryName(host.TemplateFile);
-            string interfaceFilePath = Path.Combine(templateDirectory, emittedInterface.Item1);
-            string classWrapperFilePath = Path.Combine(templateDirectory, emittedStaticWrapper.Item1);
+            string interfaceFilePath = Path.Combine(templateDirectory, emittedInterface.Filename);
+            string classWrapperFilePath = Path.Combine(templateDirectory, emittedStaticWrapper.Filename);
 
 
-            WriteCodefileToDisk(engine, emittedInterface.Item2, interfaceFilePath);
-            WriteCodefileToDisk(engine, emittedStaticWrapper.Item2, classWrapperFilePath);
+            WriteCodefileToDisk(engine, emittedInterface.CompilationOutput, interfaceFilePath);
+            WriteCodefileToDisk(engine, emittedStaticWrapper.CompilationOutput, classWrapperFilePath);
 
             AddFileToTemplate(host, interfaceFilePath);
             AddFileToTemplate(host, classWrapperFilePath);
