@@ -3,6 +3,14 @@
 <#@ output extension="/" #>
 <#@ import namespace="GrassTemplate" #>
 
-<# Grass.Clean(this.Host); #>
-<# Grass.Static(this.Host, "System.IO.File"); #>
-<# Grass.Static(this.Host, "System.IO.Directory"); #>
+<# 
+var codeGenOptions = new GrassTemplate.GrassOptions() 
+{ 
+	UseDynamic = false
+};
+
+Grass.Clean(this.Host); 
+
+Grass.Static(this.Host, "System.IO.File", codeGenOptions);
+Grass.Static(this.Host, "System.IO.Directory", codeGenOptions); 
+#>

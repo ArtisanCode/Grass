@@ -26,7 +26,7 @@ namespace GrassTemplate
             var ns = callContext == null ? "ArtisanCode.Grass.GeneratedContent" : callContext.ToString();
 
             var staticClass = new ClassDefinition(qualifiedAssemblyName, ns, options);
-            staticClass.PopulateStaticMethods();
+            staticClass.PopulateStaticMethods(codeGenOptions);
 
             ICodeGen engine = CreateCodeGenEngine(host);
 

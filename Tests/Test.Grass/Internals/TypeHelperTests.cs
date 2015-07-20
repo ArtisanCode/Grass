@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using GrassTemplate.Internals;
 using System.Text;
+using GrassTemplate;
 
 namespace GrassTests.Internals
 {
@@ -12,8 +13,9 @@ namespace GrassTests.Internals
         [TestMethod]
         public void DetermineType_ValidTypesRetrieved_NamespacesUpdated()
         {
-            DetermineTypeTest<dynamic>("Object", "System"); // NB: can't test for dynamic, therefore just use Object
-            DetermineTypeTest<object>("Object", "System");
+            DetermineTypeTest<dynamic>("dynamic", "System", new GrassOptions { UseDynamic = true });
+            DetermineTypeTest<object>("Object", "System", new GrassOptions { UseDynamic = false });
+            DetermineTypeTest<dynamic>("Object", "System", new GrassOptions { UseDynamic = false });
             DetermineTypeTest<string>("String", "System");
             DetermineTypeTest<int>("Int32", "System");
             DetermineTypeTest<short>("Int16", "System");
@@ -27,11 +29,13 @@ namespace GrassTests.Internals
             DetermineTypeTest<Encoding>("Encoding", "System.Text");
         }
 
-        private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded)
+        private void DetermineTypeTest<T>(string expectedOutput, string expectedNamespaceAdded, GrassOptions testOptions = null)
         {
+            var options = testOptions ?? new GrassOptions();
+
             var namespaces =  new HashSet<string>();
 
-            var output = TypeHelper.DetermineType(typeof(T), ref namespaces);
+            var output = TypeHelper.DetermineType(typeof(T), ref namespaces, options);
 
             Assert.AreEqual(expectedOutput, output);
             Assert.IsTrue(namespaces.Contains(expectedNamespaceAdded));

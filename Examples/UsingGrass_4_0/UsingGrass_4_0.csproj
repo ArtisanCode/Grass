@@ -40,15 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DirectoryWrapper.cs">
-      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="FileWrapper.cs">
-      <DependentUpon>Static-System.Io.References.tt</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IDirectory.cs">
       <DependentUpon>Static-System.Io.References.tt</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

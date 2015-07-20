@@ -4,7 +4,10 @@
 <#@ import namespace="GrassTemplate" #>
 
 <# 
-var codeGenOptions = new GrassTemplate.GrassOptions() { UseDynamic = true };
+var codeGenOptions = new GrassTemplate.GrassOptions() 
+{ 
+	UseDynamic = true
+};
 
 Grass.Static(this.Host, "ArtisanCode.UsingGrass.TestStaticClass, ArtisanCode.UsingGrass", codeGenOptions); 
 #>

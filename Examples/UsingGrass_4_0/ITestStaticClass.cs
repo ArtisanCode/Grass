@@ -31,6 +31,8 @@ namespace ArtisanCode.UsingGrass
         
         System.Collections.Generic.Dictionary<int, System.Collections.Generic.IList<bool>> ReturnDictionary();
         
-        object UsingDynamics(object input);
+        dynamic UsingDynamics(dynamic input);
+        
+        dynamic UsingObjects(dynamic input);
     }
 }

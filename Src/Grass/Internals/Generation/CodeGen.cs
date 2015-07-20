@@ -93,6 +93,12 @@ namespace GrassTemplate.Internals.Generation
                 ReturnType = new CodeTypeReference(m.Info.ReturnType)                
             };
 
+            if(m.ReturnType == "dynamic")
+            {
+                // special case for dynamic return types
+                method.ReturnType = new CodeTypeReference(m.ReturnType);
+            }
+
             foreach (var p in m.Parameters)
             {
                 var parameterType = p.AsType;
@@ -101,6 +107,11 @@ namespace GrassTemplate.Internals.Generation
                     parameterType = p.AsType.GetElementType();
                 }
                 var parameterSignature = new CodeParameterDeclarationExpression(parameterType, p.Name);
+                if (p.Type == "dynamic")
+                {
+                    // special case for dynamic parameters
+                    parameterSignature = new CodeParameterDeclarationExpression(new CodeTypeReference("dynamic"), p.Name);
+                }
 
                 if (p.Info.ParameterType.IsByRef && p.Info.IsOut)
                 {
@@ -124,7 +135,6 @@ namespace GrassTemplate.Internals.Generation
 
             return method;
         }
-
 
         public void EmitStaticWrapperClassMethods(ref CodeTypeDeclaration targetStaticClass, ClassDefinition staticClass, GrassOptions options)
         {

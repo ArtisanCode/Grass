@@ -1,4 +1,5 @@
-﻿using GrassTemplate.Internals;
+﻿using GrassTemplate;
+using GrassTemplate.Internals;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace GrassTests.Internals
             var testParameterSig = new ParameterSignature();
             var ns = testParameterSig.RequiredNamespaces;
 
-            testParameterSig.Type = TypeHelper.DetermineType(typeof(T), ref ns);
+            testParameterSig.Type = TypeHelper.DetermineType(typeof(T), ref ns, new GrassOptions());
             testParameterSig.Name = name;
 
             var output = testParameterSig.ToParameterDefinition();

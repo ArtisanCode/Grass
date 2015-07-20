@@ -58,7 +58,7 @@ namespace GrassTemplate.Internals
             InterfaceName = "I" + ClassName;
         }
         
-        public void PopulateStaticMethods()
+        public void PopulateStaticMethods(GrassOptions options)
         {
             Methods = new List<MethodSignature>();
 
@@ -77,7 +77,7 @@ namespace GrassTemplate.Internals
             
             foreach (var info in methods)
             {
-                Methods.Add(new MethodSignature(info));
+                Methods.Add(new MethodSignature(info, options));
             }
         }
 

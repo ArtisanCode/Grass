@@ -6,7 +6,7 @@ namespace GrassTemplate.Internals
 {
     public class TypeHelper
     {
-        public static string DetermineType(Type t, ref HashSet<string> namespaces)
+        public static string DetermineType(Type t, ref HashSet<string> namespaces, GrassOptions options)
         {
             namespaces.Add(t.Namespace);
 
@@ -18,7 +18,7 @@ namespace GrassTemplate.Internals
 
                 foreach (var genericArguement in t.GetGenericArguments())
                 {
-                    genericParams.Add(DetermineType(genericArguement, ref namespaces));
+                    genericParams.Add(DetermineType(genericArguement, ref namespaces, options));
                 }
 
                 return string.Format("{0}<{1}>", name, string.Join(", ", genericParams.ToArray()));
@@ -27,6 +27,11 @@ namespace GrassTemplate.Internals
             if (t == typeof(void))
             {
                 return "void";
+            }
+
+            if(t.Name.Equals("object", StringComparison.OrdinalIgnoreCase) && options.UseDynamic)
+            {
+                return "dynamic";
             }
 
             return t.Name.Replace("&",""); // Fix ref type issues

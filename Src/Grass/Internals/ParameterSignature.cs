@@ -27,11 +27,11 @@ namespace GrassTemplate.Internals
             RequiredNamespaces = new HashSet<string>();
         }
 
-        public ParameterSignature(ParameterInfo info) : this()
+        public ParameterSignature(ParameterInfo info, GrassOptions options) : this()
         {
             Info = info;
             Name = info.Name;
-            Type = TypeHelper.DetermineType(info.ParameterType, ref _requiredNamespaces);
+            Type = TypeHelper.DetermineType(info.ParameterType, ref _requiredNamespaces, options);
         }
 
         public string ToParameterDefinition()

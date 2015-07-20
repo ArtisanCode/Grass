@@ -14,7 +14,7 @@ namespace GrassTemplate.Internals
 
         public string ReturnType { get; set; }
 
-        public bool Virtual { get; set; }
+        public GrassOptions Options { get; set; }
 
         public string Name { get; set; }
 
@@ -34,17 +34,17 @@ namespace GrassTemplate.Internals
             Parameters = new List<ParameterSignature>();
         }
 
-        public MethodSignature(MethodInfo info, bool IsVirtual = true): this()
+        public MethodSignature(MethodInfo info, GrassOptions options) : this()
         {
             Info = info;
             Accessability = GetMethodVisibility(info);
-            ReturnType = TypeHelper.DetermineType(info.ReturnType, ref _requiredNamespaces);
+            ReturnType = TypeHelper.DetermineType(info.ReturnType, ref _requiredNamespaces, options);
             Name = info.Name;
-            Virtual = IsVirtual;
+            this.Options = options;
 
             foreach(var p in info.GetParameters())
             {
-                Parameters.Add(new ParameterSignature(p));
+                Parameters.Add(new ParameterSignature(p, options));
             }
         }
 
@@ -91,7 +91,7 @@ namespace GrassTemplate.Internals
             return string.Format( 
                 "{0}{1} {2} {3}({4})", 
                 Accessability.ToString().ToLower(),
-                Virtual?" virtual":"",
+                Options.GenerateVirtualMethods?" virtual":"",
                 ReturnType,
                 Name,
                 GetParameterList());

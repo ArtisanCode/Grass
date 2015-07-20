@@ -46,9 +46,14 @@ namespace ArtisanCode.UsingGrass
             return TestStaticClass.ReturnDictionary();
         }
         
-        public virtual object UsingDynamics(object input)
+        public virtual dynamic UsingDynamics(dynamic input)
         {
             return TestStaticClass.UsingDynamics(input);
+        }
+        
+        public virtual dynamic UsingObjects(dynamic input)
+        {
+            return TestStaticClass.UsingObjects(input);
         }
     }
 }

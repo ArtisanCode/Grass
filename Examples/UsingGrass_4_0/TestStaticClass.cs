@@ -28,6 +28,11 @@ namespace ArtisanCode.UsingGrass
             return null;
         }
 
+        public static object UsingObjects(object input)
+        {
+            return null;
+        }
+
         internal static string InternalFunctionWithCrazyParameters(List<List<List<List<List<List<string>>>>>> input)
         {
             return "This is crazy!";

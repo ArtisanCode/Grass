@@ -89,7 +89,7 @@ namespace GrassTests.Internals
             var localTestObj = new MethodSignature();
 
             localTestObj.Accessability = vis;
-            localTestObj.Virtual = virt;
+            localTestObj.Options = new GrassOptions() { GenerateVirtualMethods = virt } ;
             localTestObj.ReturnType = returnType;
             localTestObj.Name = name;
             localTestObj.Parameters = param;
